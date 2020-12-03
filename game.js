@@ -98,7 +98,7 @@ function draw() {
         wall.expand(delta);
     }
     for (let i_ = 0; i_ < balls.length; i_++) {
-        balls[i_].move();
+        balls[i_].move(delta);
         let collision = balls[i_].collideWithWalls();
         if (collision > -1) {
             if (timer.dying == 0) {
