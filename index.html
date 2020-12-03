@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    </meta>
+    <title>Jezzball</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../back_button.css">
+    <link rel="icon" href="../img/favicon.ico">
+</head>
+
+<body onload="initGame();" onclick="swapDirection();">
+    <script src="main.js"></script>
+    <div class="back_button"><a href=".."><img style="margin: auto 25%; width: 20px; height: 16px;" alt="&lt;"
+                src="../img/back_arrow.png">the&nbsp;list&nbsp;of fun&nbsp;stuff</a></div>
+    <div class="pause_button" onclick="pauseGame();">&#9612;&#9612; PAUSE GAME</div>
+    <h1>JEZZBALL</h1>
+    <div id="game">
+        <canvas id="ui-layer" width="720" height="640"></canvas>
+        <canvas id="slow-layer" width="720" height="640"></canvas>
+        <canvas id="game-layer" width="720" height="640"></canvas>
+    </div>
+    <p>
+    <div class="swap_button">↻ Swap Direction by Tapping Outside the Canvas</div>
+    <small>
+        made by <a href="https://tassaron.com">tassaron<img src="../img/old_favicon.ico"
+                alt="tassaron muffin-with-crown icon"></a>
+        <br>
+        <a href="https://github.com/tassaron2/jezzball">source code on github</a>
+    </small>
+    </p>
+
+</body>
+
+</html>
