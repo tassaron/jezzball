@@ -1,6 +1,7 @@
 /*
 Game Loop
 */
+"use strict";
 let canvas = document.getElementById("game-layer");
 let ctx = canvas.getContext("2d", { alpha: false });
 let purple = "#993f70";
@@ -14,11 +15,11 @@ let paddle;
 const balls = [];
 let grid;
 let then = Date.now()
-const fps_ratio = ms => { return ms / (1000 / 60) }
+const fps_ratio = ms => { return Math.min(ms / (1000 / 60), 2) }
 
 // Timer for pausing the ball during countdowns
 // and giving invincibility frames after a death
-timer = {
+let timer = {
     active: false,
     ballPause: 0,
     diedRecently: 0,
@@ -46,7 +47,7 @@ function resetBall() {
     timer.dying = 0;
 };
 
-level = {
+let level = {
     ballCount: 2,
 };
 
@@ -94,12 +95,13 @@ function draw() {
         requestAnimationFrame(draw);
         return;
     }
+    let wall;
     for (wall of walls.filter(wall => { if (wall.building === null) { return wall } })) {
         wall.expand(delta);
     }
     for (let i_ = 0; i_ < balls.length; i_++) {
-        balls[i_].move(delta);
-        let collision = balls[i_].collideWithWalls();
+        let hit = balls[i_].move(delta);
+        let collision = balls[i_].collideWithWalls(delta, hit);
         if (collision > -1) {
             if (timer.dying == 0) {
                 timer.dying = 30;
@@ -158,7 +160,7 @@ function nextLevel() {
         balls[balls.length] = new Ball(balls.length);
         balls[balls.length - 1].x = canvas.width * Math.random();
         balls[balls.length - 1].y = canvas.height * Math.random();
-        ch = randomChoice([0, 1]);
+        let ch = randomChoice([0, 1]);
         if (ch == 0) {
             balls[balls.length - 1].dx = -globalBall.speed;
         } else {

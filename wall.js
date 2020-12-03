@@ -13,10 +13,10 @@ function createWall() {
 
 class Wall {
     constructor() {
-        ///* DEBUG
+        /* DEBUG
         this.id = Math.round(Math.random() * 1000)
         console.log(`Wall ${this.id} created`)
-        //*/
+        */
 
         this._x = gridsafe(paddle.x);
         this._y = gridsafe(paddle.y);
