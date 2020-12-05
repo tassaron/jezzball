@@ -6,6 +6,7 @@ let canvas = document.getElementById("game-layer");
 let ctx = canvas.getContext("2d", { alpha: false });
 let purple = "#993f70";
 let score = 0;
+let percent = 0;
 let lives = 3;
 let livesColour = "#000";
 let gameOver = false;
@@ -134,14 +135,15 @@ function pauseGame() {
 }
 
 function updateScore() {
-    score = Math.round(grid.percentFilled());
-    if (score > 75) {
+    percent = Math.round(grid.percentFilled());
+    if (percent > 75) {
+        score += percent - 75
         nextLevel();
     }
 }
 
 function nextLevel() {
-    score = 0;
+    percent = 0;
     level.ballCount += 1;
     resetBall()
     while (walls.length > 0) {

@@ -83,7 +83,7 @@ class Ball {
     bounce(speed) {
         /* Reverse ball direction and add some random angle */
         speed = -speed;
-        if ((globalBall.speed - (Math.abs(speed))) > 0.5) {
+        if ((globalBall.speed - (Math.abs(speed))) > 0.7) {
             if (speed < 0) {
                 speed = -globalBall.speed;
             } else {

@@ -6,6 +6,7 @@ let mouseX = 0;
 let mouseY = 0;
 let prevLives = -1;
 let prevScore = -1;
+let prevPercent = -1;
 
 function addUIEventListeners() {
     //canvas.addEventListener("touchstart", touchStartHandler, false);
@@ -91,8 +92,6 @@ function keyUpHandler(e) {
         startGame();
     } else if (e.keyCode == 80) {
         pauseGame();
-    } else if (e.keyCode == 70) {
-        nextLevel();
     }
     e.preventDefault()
 }
@@ -108,10 +107,16 @@ function drawUI() {
         drawScore();
         return
     }
-    if (timer.diedRecently > 0 || prevScore != score || prevLives != lives || timer.active == true) {
+    if (timer.diedRecently > 0 ||
+        prevPercent != percent ||
+        prevScore != score ||
+        prevLives != lives ||
+        timer.active == true
+    ) {
         clearUI();
         drawScore();
         drawLives();
+        prevPercent = percent;
         prevScore = score;
         prevLives = lives;
     };
@@ -129,7 +134,8 @@ function clearUI() {
 function drawScore() {
     uictx.font = "16pt Verdana";
     uictx.fillStyle = "#000";
-    uictx.fillText(`${score}% Cleared`, 12, 20);
+    uictx.fillText(`${percent}% Cleared`, grid_size, 20);
+    uictx.fillText(`Score: ${score}`, grid_size * (px2grid(canvas.width) / 2) - 48, 20);
 }
 
 function drawLives() {
