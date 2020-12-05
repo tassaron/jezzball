@@ -129,11 +129,7 @@ function clearUI() {
 function drawScore() {
     uictx.font = "16pt Verdana";
     uictx.fillStyle = "#000";
-    let percent = Math.floor(score / (canvas.height * canvas.width) * 100);
-    if (percent > 80) {
-        nextLevel();
-    }
-    uictx.fillText(`${percent}% Cleared`, 12, 20);
+    uictx.fillText(`${score}% Cleared`, 12, 20);
 }
 
 function drawLives() {

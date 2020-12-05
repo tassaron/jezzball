@@ -52,8 +52,8 @@ class Wall {
                 }
             }
         }
-        //this.highpoint = gridsafe(this.highpoint);
-        //this.lowpoint = gridsafe(this.lowpoint);
+        this.highpoint = gridsafe(this.highpoint);
+        this.lowpoint = gridsafe(this.lowpoint);
     }
 
     expand(delta) {
@@ -76,7 +76,7 @@ class Wall {
             if (this.height >= this.highpoint - this.lowpoint) {
                 this.height = this.highpoint - this.lowpoint;
                 this.y = this.lowpoint;
-                console.log(`${this.id} created a Building`)
+                //console.log(`${this.id} created a Building`)
                 this.building = new Building(this.x, this.y, this.width, this.height);
             } else {
                 this.height += 16 * fps_ratio(delta);
@@ -86,7 +86,7 @@ class Wall {
             if (this.width >= this.highpoint - this.lowpoint) {
                 this.width = this.highpoint - this.lowpoint;
                 this.x = this.lowpoint;
-                console.log(`${this.id} created a Building`)
+                //console.log(`${this.id} created a Building`)
                 this.building = new Building(this.x, this.y, this.width, this.height);
             } else {
                 this.width += 16 * fps_ratio(delta);

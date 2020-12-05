@@ -71,7 +71,7 @@ class Ball {
     bounce(speed) {
         /* Reverse ball direction and add some random angle */
         speed = -speed;
-        if ((globalBall.speed - (speed * 1)) > 0.5) {
+        if ((globalBall.speed - (Math.abs(speed))) > 0.5) {
             if (speed < 0) {
                 speed = -globalBall.speed;
             } else {
@@ -119,7 +119,9 @@ class Ball {
                 if (this.intersectsX(grid_aligned_boundary_coord + this.dx * fps_ratio(delta), walls[i])) {
                     if (!hit) {
                         new_hit = true;
-                        this.x = this.dx > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
+                        if (this.intersectsX(grid_aligned_boundary_coord + this.bounce(this.dx) * fps_ratio(delta), walls[i])) {
+                            this.x = this.dx > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
+                        }
                         this.dx = this.bounce(this.dx);
                     }
                 }
@@ -132,7 +134,9 @@ class Ball {
                 if (this.intersectsY(grid_aligned_boundary_coord + this.dy * fps_ratio(delta), walls[i])) {
                     if (!hit) {
                         new_hit = true;
-                        this.y = this.dy > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
+                        if (this.intersectsY(grid_aligned_boundary_coord + this.bounce(this.dy) * fps_ratio(delta), walls[i])) {
+                            this.y = this.dy > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
+                        }
                         this.dy = this.bounce(this.dy);
                     }
                 }

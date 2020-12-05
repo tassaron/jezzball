@@ -148,6 +148,13 @@ function pauseGame() {
     }
 }
 
+function updateScore() {
+    score = Math.round(grid.percentFilled());
+    if (score > 75) {
+        nextLevel();
+    }
+}
+
 function nextLevel() {
     score = 0;
     level.ballCount += 1;
