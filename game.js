@@ -27,17 +27,6 @@ let timer = {
 };
 
 function resetBall() {
-    // change ball colour
-    let prevBallColour = globalBall.colour;
-    while (globalBall.colour == prevBallColour) {
-        globalBall.colour = randomChoice([
-            "#043836",
-            "#fa482e",
-            "#0a827c",
-            "#f4a32e",
-        ]);
-    }
-
     // remove all balls but the first two, and replace them to center of screen
     while (balls.length > 2) {
         balls.pop();
@@ -74,10 +63,6 @@ function initGame() {
     gameOver = false;
     resetBall();
     draw();
-}
-
-function randomChoice(arr) {
-    return arr[Math.floor(arr.length * Math.random())];
 }
 
 /*
@@ -165,16 +150,14 @@ function nextLevel() {
     grid.clear();
     for (let i = 2; i < level.ballCount; i++) {
         balls[balls.length] = new Ball(balls.length);
-        balls[balls.length - 1].x = canvas.width * Math.random();
-        balls[balls.length - 1].y = canvas.height * Math.random();
-        let ch = randomChoice([0, 1]);
-        if (ch == 0) {
+        balls[balls.length - 1].x = canvas.width * (Math.min(0.8, Math.random()) + 0.1);
+        balls[balls.length - 1].y = canvas.height * (Math.min(0.8, Math.random()) + 0.1);
+        if (Math.random() > 0.5) {
             balls[balls.length - 1].dx = -globalBall.speed;
         } else {
             balls[balls.length - 1].dx = globalBall.speed;
         }
-        ch = randomChoice([0, 1]);
-        if (ch == 0) {
+        if (Math.random() > 0.5) {
             balls[balls.length - 1].dy = -globalBall.speed;
         } else {
             balls[balls.length - 1].dy = globalBall.speed;

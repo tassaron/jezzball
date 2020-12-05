@@ -5,7 +5,18 @@ globalBall = {
     speed: 4,
     radius: 12,
     sq_radius: Math.pow(15, 2),
-    colour: "#000",
+    colours: [
+        "purple",
+        "blue",
+        "green",
+        "#f4a32e",
+        "#ff4c00",
+        "#9a0200",
+        "#da482e",
+        "#0a827c",
+        "#043836",
+        "black",
+    ]
 };
 
 class Ball {
@@ -15,6 +26,7 @@ class Ball {
         this.y = y;
         this.dx = globalBall.speed;
         this.dy = -globalBall.speed;
+        this.colour = globalBall.colours[i];
         // left is 0, right is 1
     }
 
@@ -25,7 +37,7 @@ class Ball {
     draw(x, y) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, globalBall.radius, 0, Math.PI * 2);
-        ctx.fillStyle = globalBall.colour;
+        ctx.fillStyle = this.colour;
         ctx.fill();
         ctx.closePath();
     }
@@ -55,7 +67,7 @@ class Ball {
         for (let ball of balls) {
             if (ball.i == this.i) { continue }
             if (this.collideWithBall(ball.x, ball.y)) {
-                if (randomChoice([0, 1]) == 0) {
+                if (Math.random() > 0.5) {
                     this.dx = this.bounce(this.dx);
                 } else {
                     this.dy = this.bounce(this.dy);
