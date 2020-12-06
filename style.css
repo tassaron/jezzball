@@ -5,6 +5,7 @@ body {
     color: #eee;
     text-align: center;
     margin-top: 2em;
+    font-family: sans;
 }
 
 #game {
@@ -33,7 +34,7 @@ canvas { position: absolute; top: 0px; left: 0px;}
   width: 640px;
   border-radius: 10px;
   padding: 1em;
-  margin: auto;
+  margin: auto auto 0.5em auto;
   text-align: center;
 }
 

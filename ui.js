@@ -7,6 +7,7 @@ let mouseY = 0;
 let prevLives = -1;
 let prevScore = -1;
 let prevPercent = -1;
+let gameOverDrawn = false;
 
 function addUIEventListeners() {
     uicanvas.addEventListener("touchstart", touchStartHandler, false);
@@ -105,9 +106,12 @@ function keyUpHandler(e) {
 
 function drawUI(force = false) {
     if (gameOver == true) {
-        clearUI();
-        drawGameOver();
-        drawScore();
+        if (gameOverDrawn == false) {
+            clearUI();
+            drawGameOver();
+            drawScore();
+            gameOverDrawn = true;
+        }
         return
     }
     if (force ||
@@ -132,18 +136,19 @@ function drawUI(force = false) {
 }
 
 function clearUI() {
+    gameOverDrawn = false;
     uictx.clearRect(0, 0, uicanvas.width, uicanvas.height);
 }
 
 function drawScore() {
-    uictx.font = "16pt Verdana";
+    uictx.font = "16pt Sans";
     uictx.fillStyle = "#000";
     uictx.fillText(`${percent}% Cleared`, grid_size, 20);
     uictx.fillText(`Score: ${score}`, grid_size * (px2grid(canvas.width) / 2) - 48, 20);
 }
 
 function drawLives() {
-    uictx.font = "16pt Verdana";
+    uictx.font = "16pt Sans";
     if (timer.diedRecently > 0) {
         if (
             timer.diedRecently % 15 == 0 &&
@@ -168,23 +173,23 @@ function drawLives() {
 }
 
 function drawGameOver() {
-    uictx.font = "36pt Verdana";
-    uictx.fillStyle = "#ff0000";
+    uictx.font = "36pt Sans";
+    uictx.fillStyle = "#33aaff";
     uictx.fillText("Game Over", canvas.width / 2 - 132, canvas.height / 2 - 32);
-    uictx.font = "16pt Verdana";
+    uictx.font = "16pt Sans";
     uictx.fillText("tap or click to restart", canvas.width / 2 - 92, canvas.height / 2 + 22);
     drawMuffin();
 }
 
 function drawPauseScreen() {
-    uictx.font = "36pt Verdana";
+    uictx.font = "36pt Sans";
     uictx.fillStyle = "#333";
     uictx.fillText("Paused", canvas.width / 2 - 90, canvas.height / 2);
 }
 
 function drawCountdown() {
-    num = Math.floor(timer.ballPause / 30) + 1;
-    uictx.font = "36pt Verdana";
+    num = Math.floor(timer.ballPause / 60) + 1;
+    uictx.font = "36pt Sans";
     uictx.fillStyle = purple;
     uictx.fillText(num, canvas.width / 2 - 4, canvas.height / 2 + 8);
 }
@@ -194,7 +199,7 @@ function drawMuffin() {
     uictx.save();
     uictx.strokeStyle = "rgba(0,0,0,0)";
     uictx.miterLimit = 4;
-    uictx.scale(0.26666666666666666, 0.26666666666666666);
+    uictx.scale(0.31, 0.31);
     uictx.save();
     uictx.restore();
     uictx.save();
