@@ -69,7 +69,7 @@ function startGame() {
     balls[0].dx = -globalBall.speed;
     balls[1].dy = globalBall.speed;
     balls[1].dx = globalBall.speed;
-    /* Start loop and draw first frame */
+    level.ballCount = 2;
     percent = 0;
     score = 0;
     lives = 3;
@@ -77,6 +77,7 @@ function startGame() {
     grid.clear()
     resetWalls();
     resetBall();
+    /* Start game loop by drawing the first frame */
     draw();
 }
 
@@ -159,6 +160,7 @@ function updateScore() {
 }
 
 function nextLevel() {
+    score += 5;
     percent = 0;
     level.ballCount += 1;
     resetBall()

@@ -11,6 +11,7 @@ let gameOverDrawn = false;
 
 function addUIEventListeners() {
     uicanvas.addEventListener("touchstart", touchStartHandler, false);
+    uicanvas.addEventListener("touchend", touchEndHandler, false);
     uicanvas.addEventListener("touchmove", touchMoveHandler, false);
     uicanvas.addEventListener("mousedown", mouseDownHandler, false);
     uicanvas.addEventListener("mousemove", mouseMoveHandler, false);
@@ -25,6 +26,10 @@ function addUIEventListeners() {
  */
 function touchStartHandler(e) {
     touchMoveHandler(e);
+    e.preventDefault();
+}
+
+function touchEndHandler(e) {
     if (gameOver == true && gamePaused == false) {
         startGame();
     } else {

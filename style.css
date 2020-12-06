@@ -30,11 +30,13 @@ canvas { position: absolute; top: 0px; left: 0px;}
 #swap_button {
   background-color: black;
   color: white;
-  height: 3em;
+  height: 8em;
   width: 640px;
   border-radius: 10px;
   padding: 1em;
   margin: auto auto 0.5em auto;
+  font-size: x-large;
+  font-weight: 2;
   text-align: center;
 }
 

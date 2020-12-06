@@ -79,8 +79,8 @@ class Wall {
                 //console.log(`${this.id} created a Building`)
                 this.building = new Building(this.x, this.y, this.width, this.height);
             } else {
-                this.height += 16 * fps_ratio(delta);
-                this.y -= 8 * fps_ratio(delta);
+                this.height += 10 * fps_ratio(delta);
+                this.y -= 5 * fps_ratio(delta);
             }
         } else {
             if (this.width >= this.highpoint - this.lowpoint) {
@@ -89,8 +89,8 @@ class Wall {
                 //console.log(`${this.id} created a Building`)
                 this.building = new Building(this.x, this.y, this.width, this.height);
             } else {
-                this.width += 16 * fps_ratio(delta);
-                this.x -= 8 * fps_ratio(delta);
+                this.width += 10 * fps_ratio(delta);
+                this.x -= 5 * fps_ratio(delta);
             }
         }
     }
