@@ -27,5 +27,6 @@ class Building {
         grid.draw();
         this.drawn = true;
         updateScore();
+        Wall.count -= 1;
     }
 }

@@ -7,12 +7,25 @@ const walls = [];
 
 
 function createWall() {
-    walls.push(new Wall());
+    if (
+        gameOver === false && gamePaused === false &&
+        Wall.count < 3 && timer.active === false
+    ) {
+        walls.push(new Wall());
+    }
 }
 
 
 class Wall {
+    static count = 0;
+
+    static remove(i) {
+        walls.splice(i, 1);
+        Wall.count -= 1;
+    }
+
     constructor() {
+        Wall.count += 1;
         this._x = gridsafe(paddle.x);
         this._y = gridsafe(paddle.y);
         this.dir = paddle.direction;
@@ -58,7 +71,7 @@ class Wall {
 
         /* Expand until the difference is about the size of a grid square, then turn into a building */
         if (this.dir == 0) {
-            if (Math.abs(this.height - (this.highpoint - this.lowpoint)) <= grid_size) {
+            if (Math.abs(this.height - (this.highpoint - this.lowpoint)) <= grid_size + 1) {
                 this.height = this.highpoint - this.lowpoint;
                 this.y = this.lowpoint;
                 this.building = new Building(this.x, this.y, this.width, this.height);
@@ -76,7 +89,7 @@ class Wall {
                 }
             }
         } else {
-            if (Math.abs(this.width - (this.highpoint - this.lowpoint)) <= grid_size) {
+            if (Math.abs(this.width - (this.highpoint - this.lowpoint)) <= grid_size + 1) {
                 this.width = this.highpoint - this.lowpoint;
                 this.x = this.lowpoint;
                 this.building = new Building(this.x, this.y, this.width, this.height);
@@ -89,7 +102,7 @@ class Wall {
                     this.x -= 10 * fps_ratio(delta);
                     this.width += 10 * fps_ratio(delta);
                 } else {
-                    this.x = this.lowpoint;
+                    this.x = this.lowpoint.valueOf();
                     this.width += 10 * fps_ratio(delta);
                 }
             }

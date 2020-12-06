@@ -115,7 +115,7 @@ function draw() {
                 }
                 lives--;
             }
-            walls.splice(collision, 1);
+            Wall.remove(collision);
         }
     }
     /* If the player is dying, tick down the timer that will cause a gameOver soon */
