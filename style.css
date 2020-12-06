@@ -19,3 +19,25 @@ canvas { position: absolute; top: 0px; left: 0px;}
 #ui-layer { z-index: 3; position: absolute; top: 0px; left: 0px;}
 #slow-layer { z-index: 2; position: absolute; top: 0px; left: 0px;}
 #game-layer { z-index: 1; position: absolute; top: 0px; left: 0px;}
+
+@media only screen and (min-width: 1000px) {
+  #main_content {
+    margin: 0 20%;
+  }
+}
+
+#swap_button {
+  background-color: black;
+  color: white;
+  height: 3em;
+  width: 640px;
+  border-radius: 10px;
+  padding: 1em;
+  margin: auto;
+  text-align: center;
+}
+
+#help_text {
+  padding-bottom: 0.5em;
+  margin: 0 auto;
+}

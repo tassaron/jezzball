@@ -1,5 +1,5 @@
 /*
-Appends game scripts onto the DOM Head and exposes a startGame function
+Appends game scripts onto the DOM Head
 */
 
 function load(path) {

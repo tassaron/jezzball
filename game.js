@@ -27,6 +27,12 @@ let timer = {
     dying: 0
 };
 
+function resetWalls() {
+    while (walls.length > 0) {
+        walls.pop();
+    }
+}
+
 function resetBall() {
     // remove all balls but the first two, and replace them to center of screen
     while (balls.length > 2) {
@@ -45,23 +51,31 @@ function initGame() {
     /* Create global objects defined in other js files */
     paddle = new Paddle();
     grid = new Grid()
-    swapDirection();
     balls[0] = new Ball(0);
     balls[1] = new Ball(1);
+    swapDirection();
+
+    /* Add event listeners */
+    addUIEventListeners();
+
+    startGame();
+}
+
+function startGame() {
+    /* Starts a new game */
     balls[0].x = canvas.width / 2;
     balls[0].y = canvas.height - 96;
     balls[0].dy = -globalBall.speed;
     balls[0].dx = -globalBall.speed;
     balls[1].dy = globalBall.speed;
     balls[1].dx = globalBall.speed;
-
-    /* Add event listeners */
-    addUIEventListeners();
-
     /* Start loop and draw first frame */
+    percent = 0;
     score = 0;
     lives = 3;
     gameOver = false;
+    grid.clear()
+    resetWalls();
     resetBall();
     draw();
 }
@@ -129,6 +143,8 @@ function swapDirection() {
 function pauseGame() {
     if (gamePaused == true) {
         gamePaused = false;
+        clearUI();
+        drawUI(true);
     } else {
         gamePaused = true;
     }
@@ -146,9 +162,7 @@ function nextLevel() {
     percent = 0;
     level.ballCount += 1;
     resetBall()
-    while (walls.length > 0) {
-        walls.pop();
-    }
+    resetWalls();
     grid.clear();
     for (let i = 2; i < level.ballCount; i++) {
         balls[balls.length] = new Ball(balls.length);

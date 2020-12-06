@@ -9,8 +9,8 @@ let prevScore = -1;
 let prevPercent = -1;
 
 function addUIEventListeners() {
-    //canvas.addEventListener("touchstart", touchStartHandler, false);
-    //canvas.addEventListener("touchmove", touchMoveHandler, false);
+    uicanvas.addEventListener("touchstart", touchStartHandler, false);
+    uicanvas.addEventListener("touchmove", touchMoveHandler, false);
     uicanvas.addEventListener("mousedown", mouseDownHandler, false);
     uicanvas.addEventListener("mousemove", mouseMoveHandler, false);
     document.addEventListener('contextmenu', function (e) {
@@ -23,10 +23,11 @@ function addUIEventListeners() {
  * CONTROL HANDLERS
  */
 function touchStartHandler(e) {
-    if (gameOver == true) {
+    touchMoveHandler(e);
+    if (gameOver == true && gamePaused == false) {
         startGame();
     } else {
-        touchMoveHandler(e);
+        createWall()
     }
     e.preventDefault();
 }
@@ -77,9 +78,11 @@ function mouseDownHandler(e) {
     if (e.button == 0) {
         if (gameOver == true && gamePaused == false) {
             startGame();
+        } else {
+            createWall()
         }
     } else if (e.button > 0) {
-        createWall()
+        swapDirection();
     }
 }
 
@@ -100,14 +103,15 @@ function keyUpHandler(e) {
 *  DRAWING FUNCTIONS
 */
 
-function drawUI() {
+function drawUI(force = false) {
     if (gameOver == true) {
         clearUI();
         drawGameOver();
         drawScore();
         return
     }
-    if (timer.diedRecently > 0 ||
+    if (force ||
+        timer.diedRecently > 0 ||
         prevPercent != percent ||
         prevScore != score ||
         prevLives != lives ||
