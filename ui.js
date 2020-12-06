@@ -34,10 +34,11 @@ function touchStartHandler(e) {
 }
 
 function touchMoveHandler(e) {
-    // get relative (to canvas) coords of touch
+    // get relative (to canvas and scroll position) coords of touch
     touch = e.changedTouches[0];
-    let mouseX = touch.pageX - canvas.offsetLeft;
-    let mouseY = touch.pageY - canvas.offsetTop;
+    scroll_position = document.getScroll();
+    mouseX = touch.pageX - gamediv.offsetLeft + scroll_position[0];
+    mouseY = touch.pageY - gamediv.offsetTop + scroll_position[1];
     if (mouseX > 0 && mouseX < canvas.width) {
         paddle.x = mouseX - paddle.width / 2;
     }
