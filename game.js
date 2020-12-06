@@ -89,6 +89,7 @@ function draw() {
     let now = Date.now()
     let delta = now - then;
 
+    /* Clear the game-layer canvas on every frame & abort early if game is paused */
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     if (gamePaused == true) {
@@ -96,10 +97,13 @@ function draw() {
         requestAnimationFrame(draw);
         return;
     }
-    let wall;
-    for (wall of walls.filter(wall => { if (wall.building === null) { return wall } })) {
+
+    /* Expand walls, turn them into buildings, & flood_fill the grid if building is created */
+    for (let wall of walls.filter(wall => { if (wall.building === null) { return wall } })) {
         wall.expand(delta);
     }
+
+    /* Move and collide balls & delete expanding walls that intersect balls */
     for (let i_ = 0; i_ < balls.length; i_++) {
         let hit = balls[i_].move(delta);
         let collision = balls[i_].collideWithWalls(delta, hit);
@@ -114,6 +118,7 @@ function draw() {
             walls.splice(collision, 1);
         }
     }
+    /* If the player is dying, tick down the timer that will cause a gameOver soon */
     if (timer.dying > 0) {
         timer.dying--;
         if (timer.dying == 0) {

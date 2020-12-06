@@ -45,7 +45,25 @@ class Grid {
     }
 
     fill_cell(x, y) {
-        this.grid[y][x] = true;
+        try {
+            this.grid[y][x] = true;
+        } catch (e) {
+            if (e instanceof TypeError) {
+                console.error(`(x${x}, y${y}) is out of bounds`);
+            }
+            throw (e);
+        }
+    }
+
+    get_cell(x, y) {
+        try {
+            return this.grid[y][x];
+        } catch (e) {
+            if (e instanceof TypeError) {
+                console.error(`(x${x}, y${y}) is out of bounds`);
+            }
+            throw (e);
+        }
     }
 
     /* Wrote this before I realized I didn't need it

@@ -13,11 +13,6 @@ function createWall() {
 
 class Wall {
     constructor() {
-        /* DEBUG
-        this.id = Math.round(Math.random() * 1000)
-        console.log(`Wall ${this.id} created`)
-        */
-
         this._x = gridsafe(paddle.x);
         this._y = gridsafe(paddle.y);
         this.dir = paddle.direction;
@@ -58,35 +53,23 @@ class Wall {
 
     expand(delta) {
         if (this.building !== null) {
-            console.error("This wall finished expanding")
-            return;
+            throw "This wall finished expanding";
         }
 
-        /* DEBUG OPTION: QUICK-DRAW WALLS INSTEAD OF ANIMATING EXPANSION
+        /* Expand until the difference is about the size of a grid square, then turn into a building */
         if (this.dir == 0) {
-            this.y = this.lowpoint;
-            this.height = this.highpoint - this.lowpoint;
-        } else {
-            this.x = this.lowpoint;
-            this.width = this.highpoint - this.lowpoint;
-        }
-        this.building = new Building(this.x, this.y, this.width, this.height);*/
-
-        if (this.dir == 0) {
-            if (this.height >= this.highpoint - this.lowpoint) {
+            if (Math.abs(this.height - (this.highpoint - this.lowpoint)) <= grid_size) {
                 this.height = this.highpoint - this.lowpoint;
                 this.y = this.lowpoint;
-                //console.log(`${this.id} created a Building`)
                 this.building = new Building(this.x, this.y, this.width, this.height);
             } else {
                 this.height += 10 * fps_ratio(delta);
                 this.y -= 5 * fps_ratio(delta);
             }
         } else {
-            if (this.width >= this.highpoint - this.lowpoint) {
+            if (Math.abs(this.width - (this.highpoint - this.lowpoint)) <= grid_size) {
                 this.width = this.highpoint - this.lowpoint;
                 this.x = this.lowpoint;
-                //console.log(`${this.id} created a Building`)
                 this.building = new Building(this.x, this.y, this.width, this.height);
             } else {
                 this.width += 10 * fps_ratio(delta);
