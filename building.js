@@ -1,4 +1,8 @@
-class Building {
+import { Wall } from './wall.js';
+import { px2grid } from './grid.js';
+import { updateScore, grid } from './game.js';
+
+export class Building {
     constructor(x, y, width, height) {
         this.x = x;
         this.y = y;

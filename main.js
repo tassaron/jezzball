@@ -1,16 +1,6 @@
 /*
-Appends game scripts onto the DOM Head
+Imports all modules and starts the first game of Jezzball
 */
-
-function load(path) {
-    let imported = document.createElement('script');
-    imported.src = path;
-    document.head.appendChild(imported);
-};
-load('grid.js');
-load('building.js');
-load('paddle.js');
-load('wall.js');
-load('ball.js');
-load('ui.js')
-load('game.js');
+"use strict";
+import { initGame } from './game.js';
+initGame();

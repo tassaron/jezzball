@@ -1,26 +1,30 @@
 /*
 Game Loop
 */
-"use strict";
-let canvas = document.getElementById("game-layer");
-let ctx = canvas.getContext("2d", { alpha: false });
-let purple = "#993f70";
-let score = 0;
-let percent = 0;
-let lives = 3;
-let livesColour = "#000";
-let gameOver = false;
-let gamePaused = false;
-let bricks = [];
-let paddle;
-const balls = [];
-let grid;
+export const purple = "#993f70";
+import { addUIEventListeners, drawUI, clearUI, drawPauseScreen } from './ui.js';
+import { Grid } from './grid.js';
+import { Paddle } from './paddle.js';
+import { Wall, walls } from './wall.js';
+import { Ball, balls } from './ball.js';
+
+export const canvas = document.getElementById("game-layer");
+export const ctx = canvas.getContext("2d", { alpha: false });
+export const fps_ratio = ms => { return Math.min(ms / (1000 / 60), 2) }
+export const paddle = new Paddle();
+export const grid = new Grid()
+
+export let score = 0;
+export let percent = 0;
+export let lives = 3;
+export let gameOver = false;
+export let gamePaused = false;
 let then = Date.now()
-const fps_ratio = ms => { return Math.min(ms / (1000 / 60), 2) }
+
 
 // Timer for pausing the ball during countdowns
 // and giving invincibility frames after a death
-let timer = {
+export let timer = {
     active: false,
     ballPause: 0,
     diedRecently: 0,
@@ -47,10 +51,8 @@ let level = {
     ballCount: 2,
 };
 
-function initGame() {
+export function initGame() {
     /* Create global objects defined in other js files */
-    paddle = new Paddle();
-    grid = new Grid()
     balls[0] = new Ball(0);
     balls[1] = new Ball(1);
     swapDirection();
@@ -61,14 +63,16 @@ function initGame() {
     startGame();
 }
 
-function startGame() {
+export function startGame() {
     /* Starts a new game */
-    balls[0].x = canvas.width / 2;
+    balls[0].x = canvas.width / 2 - 48;
     balls[0].y = canvas.height - 96;
-    balls[0].dy = -globalBall.speed;
-    balls[0].dx = -globalBall.speed;
-    balls[1].dy = globalBall.speed;
-    balls[1].dx = globalBall.speed;
+    balls[1].x = canvas.width / 2 + 48;
+    balls[1].y = canvas.height - 96;
+    balls[0].dy = -Ball.speed;
+    balls[0].dx = -Ball.speed;
+    balls[1].dy = Ball.speed;
+    balls[1].dx = Ball.speed;
     level.ballCount = 2;
     percent = 0;
     score = 0;
@@ -142,11 +146,11 @@ function draw() {
     then = Date.now();
 }
 
-function swapDirection() {
+export function swapDirection() {
     if (paddle.direction == 0) { paddle.direction = 1 } else { paddle.direction = 0 };
 }
 
-function pauseGame() {
+export function pauseGame() {
     if (gamePaused == true) {
         gamePaused = false;
         clearUI();
@@ -156,7 +160,7 @@ function pauseGame() {
     }
 }
 
-function updateScore() {
+export function updateScore() {
     percent = Math.round(grid.percentFilled());
     if (percent > 75) {
         score += percent - 75
@@ -176,14 +180,14 @@ function nextLevel() {
         balls[balls.length - 1].x = canvas.width * (Math.min(0.8, Math.random()) + 0.1);
         balls[balls.length - 1].y = canvas.height * (Math.min(0.8, Math.random()) + 0.1);
         if (Math.random() > 0.5) {
-            balls[balls.length - 1].dx = -globalBall.speed;
+            balls[balls.length - 1].dx = -Ball.speed;
         } else {
-            balls[balls.length - 1].dx = globalBall.speed;
+            balls[balls.length - 1].dx = Ball.speed;
         }
         if (Math.random() > 0.5) {
-            balls[balls.length - 1].dy = -globalBall.speed;
+            balls[balls.length - 1].dy = -Ball.speed;
         } else {
-            balls[balls.length - 1].dy = globalBall.speed;
+            balls[balls.length - 1].dy = Ball.speed;
         }
     }
 }

@@ -10,12 +10,12 @@
     <link rel="icon" href="../img/favicon.ico">
 </head>
 
-<body onload="initGame();">
-    <div class="back_button"><a href=".."><img style="margin: auto 25%; width: 20px; height: 16px;" alt="&lt;"
+<body>
+    <div id="back_button"><a href=".."><img style="margin: auto 25%; width: 20px; height: 16px;" alt="&lt;"
                 src="../img/back_arrow.png">the&nbsp;list&nbsp;of fun&nbsp;stuff</a></div>
-    <div class="pause_button" onclick="pauseGame();">&#9612;&#9612; PAUSE GAME</div>
-    <div id="main_content">
-        <script src="main.js"></script>
+    <div id="pause_button"">&#9612;&#9612; PAUSE GAME</div>
+    <div id=" main_content">
+        <script type="module" src="main.js"></script>
         <h1>JEZZBALL</h1>
         <div id="help_text">Fill the level with walls! Tap to place a wall.<br>Tap the box underneath, or right-click,
             to swap direction.</div>
@@ -25,7 +25,7 @@
             <canvas id="game-layer" width="720" height="640"></canvas>
         </div>
         <p>
-        <div onclick="swapDirection();" id="swap_button">↻ Swap Direction By Tapping This Box</div>
+        <div id="swap_button">↻ Swap Direction By Tapping This Box</div>
         <small>
             made by <a href="https://tassaron.com">tassaron<img src="../img/old_favicon.ico"
                     alt="tassaron muffin-with-crown icon"></a>

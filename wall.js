@@ -3,10 +3,13 @@
  * It expands in that direction until hitting the canvas bondaries or a ball
  * Hitting a canvas boundary creates a Building; hitting a ball loses a life
  */
-const walls = [];
+import { Building } from './building.js';
+import { fps_ratio, gameOver, gamePaused, timer, paddle, canvas, ctx } from './game.js';
+import { grid_size, gridsafe } from './grid.js';
+export const walls = [];
 
 
-function createWall() {
+export function createWall() {
     if (
         gameOver === false && gamePaused === false &&
         Wall.count < 3 && timer.active === false
@@ -16,7 +19,7 @@ function createWall() {
 }
 
 
-class Wall {
+export class Wall {
     static count = 0;
 
     static remove(i) {

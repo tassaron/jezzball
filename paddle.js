@@ -1,4 +1,9 @@
-class Paddle {
+import { ctx, purple } from './game.js';
+import { gridsafe, grid_size } from './grid.js';
+import { mouseX, mouseY } from './ui.js';
+let canvas = document.getElementById("game-layer");
+
+export class Paddle {
     constructor() {
         this.colour = purple;
         this.x = canvas.width / 2;

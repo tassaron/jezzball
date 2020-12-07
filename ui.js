@@ -1,15 +1,27 @@
 /* Controls top layer canvas that draws UI and captures events */
+import { score, lives, percent, gameOver, gamePaused, pauseGame, swapDirection, paddle, purple, timer, startGame } from './game.js';
+import { createWall } from './wall.js';
+import { px2grid, grid_size } from './grid.js';
+
 let gamediv = document.getElementById("game");
 let uicanvas = document.getElementById("ui-layer");
 let uictx = uicanvas.getContext("2d");
-let mouseX = 0;
-let mouseY = 0;
+export let mouseX = 0;
+export let mouseY = 0;
 let prevLives = -1;
 let prevScore = -1;
 let prevPercent = -1;
 let gameOverDrawn = false;
+let livesColour = "#000";
 
-function addUIEventListeners() {
+export function addUIEventListeners() {
+    /* Connect onclick events to HTML "buttons" */
+    let pause_button = document.getElementById("pause_button");
+    pause_button.addEventListener('click', pauseGame, false);
+    let swap_button = document.getElementById("swap_button");
+    swap_button.addEventListener('click', swapDirection, false);
+
+    /* Connect keyboard/mouse/touch events to canvas */
     uicanvas.addEventListener("touchstart", touchStartHandler, false);
     uicanvas.addEventListener("touchend", touchEndHandler, false);
     uicanvas.addEventListener("touchmove", touchMoveHandler, false);
@@ -40,14 +52,14 @@ function touchEndHandler(e) {
 
 function touchMoveHandler(e) {
     // get relative (to canvas and scroll position) coords of touch
-    touch = e.changedTouches[0];
-    scroll_position = document.getScroll();
+    let touch = e.changedTouches[0];
+    let scroll_position = document.getScroll();
     mouseX = touch.pageX - gamediv.offsetLeft + scroll_position[0];
     mouseY = touch.pageY - gamediv.offsetTop + scroll_position[1];
-    if (mouseX > 0 && mouseX < canvas.width) {
+    if (mouseX > 0 && mouseX < uicanvas.width) {
         paddle.x = mouseX - paddle.width / 2;
     }
-    if (mouseY > 0 && mouseY < canvas.height) {
+    if (mouseY > 0 && mouseY < uicanvas.height) {
         paddle.y = mouseY - paddle.height / 2;
     };
     e.preventDefault();
@@ -69,14 +81,14 @@ document.getScroll = function () {
 
 function mouseMoveHandler(e) {
     // Get relative (to canvas and scroll position) coords of mouse
-    scroll_position = document.getScroll();
+    let scroll_position = document.getScroll();
     mouseX = e.clientX - gamediv.offsetLeft + scroll_position[0];
     mouseY = e.clientY - gamediv.offsetTop + scroll_position[1];
     // Move paddle
-    if (mouseX > 0 && mouseX < canvas.width) {
+    if (mouseX > 0 && mouseX < uicanvas.width) {
         paddle.x = mouseX - paddle.width / 2;
     };
-    if (mouseY > 0 && mouseY < canvas.height) {
+    if (mouseY > 0 && mouseY < uicanvas.height) {
         paddle.y = mouseY - paddle.height / 2;
     };
 }
@@ -110,7 +122,7 @@ function keyUpHandler(e) {
 *  DRAWING FUNCTIONS
 */
 
-function drawUI(force = false) {
+export function drawUI(force = false) {
     if (gameOver == true) {
         if (gameOverDrawn == false) {
             clearUI();
@@ -141,7 +153,7 @@ function drawUI(force = false) {
     }
 }
 
-function clearUI() {
+export function clearUI() {
     gameOverDrawn = false;
     uictx.clearRect(0, 0, uicanvas.width, uicanvas.height);
 }
@@ -150,7 +162,7 @@ function drawScore() {
     uictx.font = "16pt Sans";
     uictx.fillStyle = "#000";
     uictx.fillText(`${percent}% Cleared`, grid_size, 20);
-    uictx.fillText(`Score: ${score}`, grid_size * (px2grid(canvas.width) / 2) - 48, 20);
+    uictx.fillText(`Score: ${score}`, grid_size * (px2grid(uicanvas.width) / 2) - 48, 20);
 }
 
 function drawLives() {
@@ -175,29 +187,29 @@ function drawLives() {
     } else {
         var livesText = lives.toString();
     }
-    uictx.fillText(`Lives: ${livesText}`, canvas.width - 96, 20);
+    uictx.fillText(`Lives: ${livesText}`, uicanvas.width - 96, 20);
 }
 
 function drawGameOver() {
     uictx.font = "36pt Sans";
     uictx.fillStyle = "#33aaff";
-    uictx.fillText("Game Over", canvas.width / 2 - 132, canvas.height / 2 - 32);
+    uictx.fillText("Game Over", uicanvas.width / 2 - 132, uicanvas.height / 2 - 32);
     uictx.font = "16pt Sans";
-    uictx.fillText("tap or click to restart", canvas.width / 2 - 92, canvas.height / 2 + 22);
+    uictx.fillText("tap or click to restart", uicanvas.width / 2 - 92, uicanvas.height / 2 + 22);
     drawMuffin();
 }
 
-function drawPauseScreen() {
+export function drawPauseScreen() {
     uictx.font = "36pt Sans";
     uictx.fillStyle = "#333";
-    uictx.fillText("Paused", canvas.width / 2 - 90, canvas.height / 2);
+    uictx.fillText("Paused", uicanvas.width / 2 - 90, uicanvas.height / 2);
 }
 
 function drawCountdown() {
-    num = Math.floor(timer.ballPause / 60) + 1;
+    let num = Math.floor(timer.ballPause / 60) + 1;
     uictx.font = "36pt Sans";
     uictx.fillStyle = purple;
-    uictx.fillText(num, canvas.width / 2 - 4, canvas.height / 2 + 8);
+    uictx.fillText(num, uicanvas.width / 2 - 4, uicanvas.height / 2 + 8);
 }
 
 function drawMuffin() {
