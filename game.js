@@ -109,8 +109,7 @@ function draw() {
 
     /* Move and collide balls & delete expanding walls that intersect balls */
     for (let i_ = 0; i_ < balls.length; i_++) {
-        let hit = balls[i_].move(delta);
-        let collision = balls[i_].collideWithWalls(delta, hit);
+        let collision = balls[i_].move(delta);
         if (collision > -1) {
             if (timer.dying == 0) {
                 timer.dying = 30;

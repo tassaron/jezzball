@@ -68,19 +68,29 @@ export class Ball {
             this.dy = Ball.bounce(this.dy);
         }
 
-        for (let ball of balls) {
-            if (ball.i == this.i) { continue }
-            if (this.collideWithBall(ball.x, ball.y)) {
-                if (Math.random() > 0.5) {
-                    this.dx = Ball.bounce(this.dx);
-                } else {
-                    this.dy = Ball.bounce(this.dy);
+
+        this.x += this.dx * fps_ratio(delta);
+        this.y += this.dy * fps_ratio(delta);
+
+        if (!hit) {
+            for (let ball of balls) {
+                if (ball.i == this.i) { continue }
+                if (this.collideWithBall(ball.x, ball.y)) {
+                    hit = true;
+                    if (Math.random() > 0.5) {
+                        this.dx = Ball.bounce(this.dx);
+                    } else {
+                        this.dy = Ball.bounce(this.dy);
+                    }
                 }
             }
         }
 
-        this.x += this.dx * fps_ratio(delta);
-        this.y += this.dy * fps_ratio(delta);
+        if (!hit) {
+            hit = this.collideWithWalls(delta)
+        } else {
+            hit = -1;
+        }
         return hit;
     }
 
@@ -122,24 +132,22 @@ export class Ball {
         )
     }
 
-    collideWithWalls(delta, hit = false) {
+    collideWithWalls(delta) {
         let new_hit = false;
         let grid_aligned_boundary_coord;
         for (let i = 0; i < walls.length; i++) {
             if (walls[i].dir == 0) {
                 if (this.dx < 0) {
-                    grid_aligned_boundary_coord = gridsafe(this.x - Ball.radius)
+                    grid_aligned_boundary_coord = gridsafe(this.x) - Ball.radius
                 } else {
                     grid_aligned_boundary_coord = gridsafe(this.x + Ball.radius)
                 }
                 if (this.intersectsX(grid_aligned_boundary_coord + this.dx * fps_ratio(delta), walls[i])) {
-                    if (!hit) {
-                        new_hit = true;
-                        if (this.intersectsX(grid_aligned_boundary_coord + Ball.bounce(this.dx) * fps_ratio(delta), walls[i])) {
-                            this.x = this.dx > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
-                        }
-                        this.dx = Ball.bounce(this.dx);
+                    new_hit = true;
+                    if (this.intersectsX(grid_aligned_boundary_coord + Ball.bounce(this.dx) * fps_ratio(delta), walls[i])) {
+                        this.x = this.dx > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
                     }
+                    this.dx = Ball.bounce(this.dx);
                 }
             } else {
                 if (this.dy < 0) {
@@ -148,13 +156,11 @@ export class Ball {
                     grid_aligned_boundary_coord = gridsafe(this.y + Ball.radius)
                 }
                 if (this.intersectsY(grid_aligned_boundary_coord + this.dy * fps_ratio(delta), walls[i])) {
-                    if (!hit) {
-                        new_hit = true;
-                        if (this.intersectsY(grid_aligned_boundary_coord + Ball.bounce(this.dy) * fps_ratio(delta), walls[i])) {
-                            this.y = this.dy > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
-                        }
-                        this.dy = Ball.bounce(this.dy);
+                    new_hit = true;
+                    if (this.intersectsY(grid_aligned_boundary_coord + Ball.bounce(this.dy) * fps_ratio(delta), walls[i])) {
+                        this.y = this.dy > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
                     }
+                    this.dy = Ball.bounce(this.dy);
                 }
             }
             if (new_hit) {
