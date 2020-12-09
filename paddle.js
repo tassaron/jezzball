@@ -45,9 +45,8 @@ export class Paddle {
         this._dir = new_value;
     }
 
-    draw = function () {
+    draw() {
         ctx.fillStyle = this.colour;
-        //ctx.fillRect(gridsafe(this.x), gridsafe(this.y), this.width, this.height);
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
