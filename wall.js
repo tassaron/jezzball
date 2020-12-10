@@ -4,15 +4,15 @@
  * Hitting a canvas boundary creates a Building; hitting a ball loses a life
  */
 import { Building } from './building.js';
-import { fps_ratio, gameOver, gamePaused, timer, paddle, canvas, ctx } from './game.js';
-import { grid_size, gridsafe } from './grid.js';
+import { fps_ratio, gameOver, gamePaused, timer, paddle, canvas, ctx, grid } from './game.js';
+import { grid_size, px2grid, gridsafe } from './grid.js';
 export const walls = [];
 
 
 export function createWall() {
     if (
         gameOver === false && gamePaused === false &&
-        Wall.count < 3 && timer.active === false
+        Wall.count == 0 && timer.active === false
     ) {
         walls.push(new Wall());
     }
@@ -36,11 +36,37 @@ export class Wall {
         this._height = paddle.height;
         this.building = null;
         this.lowpoint = 0;
+        this.highpoint = this.dir == 0 ? canvas.height : canvas.width
+
+        // Check if inside a wall and eject if so
         if (this.dir == 0) {
-            this.highpoint = canvas.height;
+            let x = px2grid(this.x);
+            for (let y = px2grid(this.y); y <= px2grid(this.height + this.y) && y < px2grid(canvas.height); y++) {
+                if (grid.get_cell(x, y) === true) {
+                    if (y > px2grid(this.y)) {
+                        this._y -= grid_size * (2 * (y - px2grid(this.y)));
+                        break;
+                    } else if (y == px2grid(this.y)) {
+                        this._y += grid_size;
+                        break;
+                    }
+                }
+            }
         } else {
-            this.highpoint = canvas.width;
+            let y = px2grid(this.y);
+            for (let x = px2grid(this.x); x <= px2grid(this.width + this.x) && x < px2grid(canvas.width); x++) {
+                if (grid.get_cell(x, y) === true) {
+                    if (x > px2grid(this.x)) {
+                        this._x -= grid_size * (2 * (x - px2grid(this.x)));
+                        break;
+                    } else if (x == px2grid(this.x)) {
+                        this._x += grid_size;
+                        break;
+                    }
+                }
+            }
         }
+
         // Determine what the target lowpoint and highpoint of the wall is
         // Lowpoint for Y coord is at the TOP of the canvas (low numerically, not visually)
         for (let wall of walls) {

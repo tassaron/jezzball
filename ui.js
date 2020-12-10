@@ -57,10 +57,10 @@ function touchMoveHandler(e) {
     mouseX = touch.pageX - gamediv.offsetLeft + scroll_position[0];
     mouseY = touch.pageY - gamediv.offsetTop + scroll_position[1];
     if (mouseX > 0 && mouseX < uicanvas.width) {
-        paddle.x = mouseX - paddle.width / 2;
+        paddle.x = mouseX <= grid_size ? 0 : mouseX - paddle.width / 2;
     }
     if (mouseY > 0 && mouseY < uicanvas.height) {
-        paddle.y = mouseY - paddle.height / 2;
+        paddle.y = mouseY <= grid_size ? 0 : mouseY - paddle.height / 2;
     };
     e.preventDefault();
 }
@@ -86,10 +86,10 @@ function mouseMoveHandler(e) {
     mouseY = e.clientY - gamediv.offsetTop + scroll_position[1];
     // Move paddle
     if (mouseX > 0 && mouseX < uicanvas.width) {
-        paddle.x = mouseX - paddle.width / 2;
+        paddle.x = mouseX <= grid_size ? 0 : mouseX - paddle.width / 2;
     };
     if (mouseY > 0 && mouseY < uicanvas.height) {
-        paddle.y = mouseY - paddle.height / 2;
+        paddle.y = mouseY <= grid_size ? 0 : mouseY - paddle.height / 2;
     };
 }
 
