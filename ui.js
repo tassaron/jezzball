@@ -159,14 +159,14 @@ export function clearUI() {
 }
 
 function drawScore() {
-    uictx.font = "16pt Sans";
+    uictx.font = "12pt Sans";
     uictx.fillStyle = "#000";
     uictx.fillText(`${percent}% Cleared`, grid_size, 20);
-    uictx.fillText(`Score: ${score}`, grid_size * (px2grid(uicanvas.width) / 2) - 48, 20);
+    uictx.fillText(`Score: ${score}`, grid_size * (px2grid(uicanvas.width) / 2) - 30, uicanvas.height - 10);
 }
 
 function drawLives() {
-    uictx.font = "16pt Sans";
+    uictx.font = "12pt Sans";
     if (timer.diedRecently > 0) {
         if (
             timer.diedRecently % 15 == 0 &&
@@ -187,16 +187,19 @@ function drawLives() {
     } else {
         var livesText = lives.toString();
     }
-    uictx.fillText(`Lives: ${livesText}`, uicanvas.width - 96, 20);
+    uictx.fillText(`Lives: ${livesText}`, uicanvas.width - 72, 20);
 }
 
 function drawGameOver() {
     uictx.font = "36pt Sans";
     uictx.fillStyle = "#33aaff";
     uictx.fillText("Game Over", uicanvas.width / 2 - 132, uicanvas.height / 2 - 32);
-    uictx.font = "16pt Sans";
-    uictx.fillText("tap or click to restart", uicanvas.width / 2 - 92, uicanvas.height / 2 + 22);
-    drawMuffin();
+    uictx.font = "12pt Sans";
+    uictx.fillText("tap or click to restart", uicanvas.width / 2 - 86, uicanvas.height / 2 + 22);
+    uictx.fillStyle = "black";
+    uictx.fillText("(or play the large version", uicanvas.width / 2 - 102, uicanvas.height / 2 + 42);
+    uictx.fillText("at <fun.tassaron.com/jezzball>)", uicanvas.width / 2 - 124, uicanvas.height / 2 + 62);
+    //drawMuffin();
 }
 
 export function drawPauseScreen() {
@@ -207,9 +210,14 @@ export function drawPauseScreen() {
 
 function drawCountdown() {
     let num = Math.floor(timer.ballPause / 60) + 1;
-    uictx.font = "36pt Sans";
+    uictx.font = "32pt Sans";
     uictx.fillStyle = purple;
-    uictx.fillText(num, uicanvas.width / 2 - 4, uicanvas.height / 2 + 8);
+    if (num % 2 == 0) {
+        uictx.fillStyle = "black";
+    }
+    uictx.fillText("JEZZBALL", uicanvas.width / 2 - 92, uicanvas.height / 2 - 64);
+    uictx.fillStyle = purple;
+    uictx.fillText(num, uicanvas.width / 2 - 8, uicanvas.height / 2 + 4);
 }
 
 function drawMuffin() {

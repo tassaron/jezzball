@@ -8,9 +8,9 @@ import { grid_size, gridsafe } from './grid.js';
 export const balls = [];
 
 export class Ball {
-    static speed = 4;
-    static radius = 12;
-    static sq_radius = Math.pow(12, 2);
+    static speed = 3;
+    static radius = 8;
+    static sq_radius = Math.pow(8, 2);
     static colours = [
         "purple",
         "blue",
