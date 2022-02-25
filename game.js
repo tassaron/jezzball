@@ -2,25 +2,26 @@
 Game Loop
 */
 export const purple = "#993f70";
-import { addUIEventListeners, drawUI, clearUI, drawPauseScreen } from './ui.js';
-import { Grid } from './grid.js';
-import { Paddle } from './paddle.js';
-import { Wall, walls } from './wall.js';
-import { Ball, balls } from './ball.js';
+import { addUIEventListeners, drawUI, clearUI, drawPauseScreen } from "./ui.js";
+import { Grid } from "./grid.js";
+import { Paddle } from "./paddle.js";
+import { Wall, walls } from "./wall.js";
+import { Ball, balls } from "./ball.js";
 
 export const canvas = document.getElementById("game-layer");
 export const ctx = canvas.getContext("2d", { alpha: false });
-export const fps_ratio = ms => { return Math.min(ms / (1000 / 60), 2) }
+export const fps_ratio = (ms) => {
+    return Math.min(ms / (1000 / 60), 2);
+};
 export const paddle = new Paddle();
-export const grid = new Grid()
+export const grid = new Grid();
 
 export let score = 0;
 export let percent = 0;
 export let lives = 3;
 export let gameOver = false;
 export let gamePaused = false;
-let then = Date.now()
-
+let then = Date.now();
 
 // Timer for pausing the ball during countdowns
 // and giving invincibility frames after a death
@@ -28,7 +29,7 @@ export let timer = {
     active: false,
     ballPause: 0,
     diedRecently: 0,
-    dying: 0
+    dying: 0,
 };
 
 function resetWalls() {
@@ -45,7 +46,7 @@ function resetBall() {
     timer.ballPause = 180;
     timer.active = true;
     timer.dying = 0;
-};
+}
 
 let level = {
     ballCount: 2,
@@ -78,7 +79,7 @@ export function startGame() {
     score = 0;
     lives = 3;
     gameOver = false;
-    grid.clear()
+    grid.clear();
     resetWalls();
     resetBall();
     /* Start game loop by drawing the first frame */
@@ -86,11 +87,11 @@ export function startGame() {
 }
 
 /*
-*  MAIN GAME LOOP
-*/
+ *  MAIN GAME LOOP
+ */
 
 function draw() {
-    let now = Date.now()
+    let now = Date.now();
     let delta = now - then;
 
     /* Clear the game-layer canvas on every frame & abort early if game is paused */
@@ -103,7 +104,11 @@ function draw() {
     }
 
     /* Expand walls, turn them into buildings, & flood_fill the grid if building is created */
-    for (let wall of walls.filter(wall => { if (wall.building === null) { return wall } })) {
+    for (let wall of walls.filter((wall) => {
+        if (wall.building === null) {
+            return wall;
+        }
+    })) {
         wall.expand(delta);
     }
 
@@ -146,7 +151,11 @@ function draw() {
 }
 
 export function swapDirection() {
-    if (paddle.direction == 0) { paddle.direction = 1 } else { paddle.direction = 0 };
+    if (paddle.direction == 0) {
+        paddle.direction = 1;
+    } else {
+        paddle.direction = 0;
+    }
 }
 
 export function pauseGame() {
@@ -162,7 +171,7 @@ export function pauseGame() {
 export function updateScore() {
     percent = Math.round(grid.percentFilled());
     if (percent > 75) {
-        score += percent - 75
+        score += percent - 75;
         nextLevel();
     }
 }
@@ -171,13 +180,15 @@ function nextLevel() {
     score += 5;
     percent = 0;
     level.ballCount += 1;
-    resetBall()
+    resetBall();
     resetWalls();
     grid.clear();
     for (let i = 2; i < level.ballCount; i++) {
         balls[balls.length] = new Ball(balls.length);
-        balls[balls.length - 1].x = canvas.width * (Math.min(0.8, Math.random()) + 0.1);
-        balls[balls.length - 1].y = canvas.height * (Math.min(0.8, Math.random()) + 0.1);
+        balls[balls.length - 1].x =
+            canvas.width * (Math.min(0.8, Math.random()) + 0.1);
+        balls[balls.length - 1].y =
+            canvas.height * (Math.min(0.8, Math.random()) + 0.1);
         if (Math.random() > 0.5) {
             balls[balls.length - 1].dx = -Ball.speed;
         } else {
