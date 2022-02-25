@@ -218,7 +218,7 @@ function drawGameOver() {
     uictx.fillStyle = "#33aaff";
     uictx.fillText(
         "Game Over",
-        uicanvas.width / 2 - 132,
+        uicanvas.width / 2 - 124,
         uicanvas.height / 2 - 32
     );
     uictx.font = "16pt Sans";
