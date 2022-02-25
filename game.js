@@ -72,6 +72,7 @@ export function initGame() {
 
 export function startGame() {
     /* Starts a new game */
+    hide_send_score_button();
     balls[0].x = canvas.width / 2 - 48;
     balls[0].y = canvas.height - 96;
     balls[1].x = canvas.width / 2 + 48;
