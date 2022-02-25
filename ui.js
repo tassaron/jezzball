@@ -1,10 +1,26 @@
 /* Controls top layer canvas that draws UI and captures events */
-import { score, lives, percent, gameOver, gamePaused, pauseGame, swapDirection, paddle, purple, timer, startGame } from './game.js';
-import { createWall } from './wall.js';
-import { px2grid, grid_size } from './grid.js';
+import {
+    score,
+    lives,
+    percent,
+    gameOver,
+    gamePaused,
+    pauseGame,
+    swapDirection,
+    paddle,
+    purple,
+    timer,
+    startGame,
+} from "./game.js";
+import { createWall } from "./wall.js";
+import { px2grid, grid_size } from "./grid.js";
 
 let gamediv = document.getElementById("game");
-let uicanvas = document.getElementById("ui-layer");
+let uicanvas = document.createElement("canvas");
+uicanvas.width = gamediv.offsetWidth;
+uicanvas.height = gamediv.offsetHeight;
+uicanvas.setAttribute("id", "ui-layer");
+gamediv.appendChild(uicanvas);
 let uictx = uicanvas.getContext("2d");
 export let mouseX = 0;
 export let mouseY = 0;
@@ -17,9 +33,9 @@ let livesColour = "#000";
 export function addUIEventListeners() {
     /* Connect onclick events to HTML "buttons" */
     let pause_button = document.getElementById("pause_button");
-    pause_button.addEventListener('click', pauseGame, false);
+    pause_button.addEventListener("click", pauseGame, false);
     let swap_button = document.getElementById("swap_button");
-    swap_button.addEventListener('click', swapDirection, false);
+    swap_button.addEventListener("click", swapDirection, false);
 
     /* Connect keyboard/mouse/touch events to canvas */
     uicanvas.addEventListener("touchstart", touchStartHandler, false);
@@ -27,9 +43,13 @@ export function addUIEventListeners() {
     uicanvas.addEventListener("touchmove", touchMoveHandler, false);
     uicanvas.addEventListener("mousedown", mouseDownHandler, false);
     uicanvas.addEventListener("mousemove", mouseMoveHandler, false);
-    document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-    }, false);
+    document.addEventListener(
+        "contextmenu",
+        function (e) {
+            e.preventDefault();
+        },
+        false
+    );
     document.addEventListener("keyup", keyUpHandler, false);
 }
 
@@ -45,7 +65,7 @@ function touchEndHandler(e) {
     if (gameOver == true && gamePaused == false) {
         startGame();
     } else {
-        createWall()
+        createWall();
     }
     e.preventDefault();
 }
@@ -60,7 +80,7 @@ function touchMoveHandler(e) {
     }
     if (mouseY > 0 && mouseY < uicanvas.height) {
         paddle.y = mouseY <= grid_size ? 0 : mouseY - paddle.height / 2;
-    };
+    }
     e.preventDefault();
 }
 
@@ -69,14 +89,16 @@ document.getScroll = function () {
     if (window.pageYOffset != undefined) {
         return [pageXOffset, pageYOffset];
     } else {
-        let sx, sy, d = document,
+        let sx,
+            sy,
+            d = document,
             r = d.documentElement,
             b = d.body;
         sx = r.scrollLeft || b.scrollLeft || 0;
         sy = r.scrollTop || b.scrollTop || 0;
         return [sx, sy];
     }
-}
+};
 
 function mouseMoveHandler(e) {
     // Get relative (to canvas and scroll position) coords of mouse
@@ -86,10 +108,10 @@ function mouseMoveHandler(e) {
     // Move paddle
     if (mouseX > 0 && mouseX < uicanvas.width) {
         paddle.x = mouseX <= grid_size ? 0 : mouseX - paddle.width / 2;
-    };
+    }
     if (mouseY > 0 && mouseY < uicanvas.height) {
         paddle.y = mouseY <= grid_size ? 0 : mouseY - paddle.height / 2;
-    };
+    }
 }
 
 function mouseDownHandler(e) {
@@ -97,7 +119,7 @@ function mouseDownHandler(e) {
         if (gameOver == true && gamePaused == false) {
             startGame();
         } else {
-            createWall()
+            createWall();
         }
     } else if (e.button > 0) {
         swapDirection();
@@ -114,12 +136,12 @@ function keyUpHandler(e) {
     } else if (e.keyCode == 80) {
         pauseGame();
     }
-    e.preventDefault()
+    e.preventDefault();
 }
 
 /*
-*  DRAWING FUNCTIONS
-*/
+ *  DRAWING FUNCTIONS
+ */
 
 export function drawUI(force = false) {
     if (gameOver == true) {
@@ -129,9 +151,10 @@ export function drawUI(force = false) {
             drawScore();
             gameOverDrawn = true;
         }
-        return
+        return;
     }
-    if (force ||
+    if (
+        force ||
         timer.diedRecently > 0 ||
         prevPercent != percent ||
         prevScore != score ||
@@ -144,7 +167,7 @@ export function drawUI(force = false) {
         prevPercent = percent;
         prevScore = score;
         prevLives = lives;
-    };
+    }
     if (timer.ballPause > 0) {
         drawCountdown();
     } else if (timer.ballPause == 0 && timer.active == true) {
@@ -161,21 +184,22 @@ function drawScore() {
     uictx.font = "16pt Sans";
     uictx.fillStyle = "#000";
     uictx.fillText(`${percent}% Cleared`, grid_size, 20);
-    uictx.fillText(`Score: ${score}`, grid_size * (px2grid(uicanvas.width) / 2) - 48, 20);
+    uictx.fillText(
+        `Score: ${score}`,
+        grid_size * (px2grid(uicanvas.width) / 2) - 48,
+        20
+    );
 }
 
 function drawLives() {
     uictx.font = "16pt Sans";
     if (timer.diedRecently > 0) {
-        if (
-            timer.diedRecently % 15 == 0 &&
-            livesColour == "#000"
-        ) {
+        if (timer.diedRecently % 15 == 0 && livesColour == "#000") {
             livesColour = "#ff0000";
         } else if (
-            timer.diedRecently % 15 == 0 &&
-            livesColour == "#ff0000" ||
-            timer.diedRecently == 1) {
+            (timer.diedRecently % 15 == 0 && livesColour == "#ff0000") ||
+            timer.diedRecently == 1
+        ) {
             livesColour = "#000";
         }
         timer.diedRecently--;
@@ -192,9 +216,17 @@ function drawLives() {
 function drawGameOver() {
     uictx.font = "36pt Sans";
     uictx.fillStyle = "#33aaff";
-    uictx.fillText("Game Over", uicanvas.width / 2 - 132, uicanvas.height / 2 - 32);
+    uictx.fillText(
+        "Game Over",
+        uicanvas.width / 2 - 132,
+        uicanvas.height / 2 - 32
+    );
     uictx.font = "16pt Sans";
-    uictx.fillText("tap or click to restart", uicanvas.width / 2 - 92, uicanvas.height / 2 + 22);
+    uictx.fillText(
+        "tap or click to restart",
+        uicanvas.width / 2 - 92,
+        uicanvas.height / 2 + 22
+    );
     drawMuffin();
 }
 
@@ -222,7 +254,12 @@ function drawMuffin() {
     uictx.save();
     uictx.translate(789.7776, 402.66194);
     uictx.save();
-    let g = uictx.createLinearGradient(431.43823, 309.14993, 455.10641, 306.89993);
+    let g = uictx.createLinearGradient(
+        431.43823,
+        309.14993,
+        455.10641,
+        306.89993
+    );
     g.addColorStop(0, "rgba(255, 92, 102, 1)");
     g.addColorStop(0.25, "rgba(255, 92, 102, 1)");
     g.addColorStop(0.5, "rgba(255, 77, 95, 1)");
@@ -272,8 +309,22 @@ function drawMuffin() {
     uictx.beginPath();
     uictx.moveTo(288.18821, 43.31544);
     uictx.lineTo(298.70770000000005, 169.54932);
-    uictx.bezierCurveTo(411.67574, 184.59742, 478.46090000000004, 170.90475, 529.22173, 150.79719);
-    uictx.bezierCurveTo(536.12483, 96.3052, 531.47084, -5.348219999999998, 524.19067, 28.679630000000003);
+    uictx.bezierCurveTo(
+        411.67574,
+        184.59742,
+        478.46090000000004,
+        170.90475,
+        529.22173,
+        150.79719
+    );
+    uictx.bezierCurveTo(
+        536.12483,
+        96.3052,
+        531.47084,
+        -5.348219999999998,
+        524.19067,
+        28.679630000000003
+    );
     uictx.closePath();
     uictx.fill("nonzero");
     uictx.stroke();
@@ -289,12 +340,54 @@ function drawMuffin() {
     uictx.miterLimit = "4";
     uictx.beginPath();
     uictx.moveTo(526.86343, -21.43929);
-    uictx.bezierCurveTo(543.19005, -48.707570000000004, 513.40583, -69.40107, 465.71123, -78.02789);
-    uictx.bezierCurveTo(190.31725999999998, -125.75193999999999, 231.11788, 108.26156999999999, 325.15244, 52.03463000000001);
-    uictx.bezierCurveTo(343.09062, 64.98277, 368.36647, 66.92441000000001, 400.90815, 57.96730000000001);
-    uictx.bezierCurveTo(416.24449, 65.65659000000001, 433.48974, 67.61916000000001, 452.47679, 64.35634);
-    uictx.bezierCurveTo(474.88674, 65.60239, 496.49178, 63.830040000000004, 514.08535, 47.01467);
-    uictx.bezierCurveTo(567.6820399999999, 42.80888, 556.14154, -3.9877599999999944, 526.86343, -21.439289999999993);
+    uictx.bezierCurveTo(
+        543.19005,
+        -48.707570000000004,
+        513.40583,
+        -69.40107,
+        465.71123,
+        -78.02789
+    );
+    uictx.bezierCurveTo(
+        190.31725999999998,
+        -125.75193999999999,
+        231.11788,
+        108.26156999999999,
+        325.15244,
+        52.03463000000001
+    );
+    uictx.bezierCurveTo(
+        343.09062,
+        64.98277,
+        368.36647,
+        66.92441000000001,
+        400.90815,
+        57.96730000000001
+    );
+    uictx.bezierCurveTo(
+        416.24449,
+        65.65659000000001,
+        433.48974,
+        67.61916000000001,
+        452.47679,
+        64.35634
+    );
+    uictx.bezierCurveTo(
+        474.88674,
+        65.60239,
+        496.49178,
+        63.830040000000004,
+        514.08535,
+        47.01467
+    );
+    uictx.bezierCurveTo(
+        567.6820399999999,
+        42.80888,
+        556.14154,
+        -3.9877599999999944,
+        526.86343,
+        -21.439289999999993
+    );
     uictx.closePath();
     uictx.fill();
     uictx.stroke();
@@ -332,7 +425,14 @@ function drawMuffin() {
     uictx.miterLimit = "4";
     uictx.beginPath();
     uictx.moveTo(397.99094, 146.86723);
-    uictx.bezierCurveTo(409.15273, 138.63389, 428.84109, 136.55501, 443.0638, 145.90707);
+    uictx.bezierCurveTo(
+        409.15273,
+        138.63389,
+        428.84109,
+        136.55501,
+        443.0638,
+        145.90707
+    );
     uictx.fill();
     uictx.stroke();
     uictx.restore();
@@ -347,10 +447,38 @@ function drawMuffin() {
     uictx.transform(0.84606142, 0, 0, 1, 123.64927, -204);
     uictx.beginPath();
     uictx.moveTo(274.711, 302.51621220000004);
-    uictx.bezierCurveTo(279.59255366631373, 302.51621220000004, 283.5498348, 305.6820370890404, 283.5498348, 309.58728);
-    uictx.bezierCurveTo(283.5498348, 313.4925229109596, 279.59255366631373, 316.6583478, 274.711, 316.6583478);
-    uictx.bezierCurveTo(269.8294463336863, 316.6583478, 265.87216520000004, 313.4925229109596, 265.87216520000004, 309.58728);
-    uictx.bezierCurveTo(265.87216520000004, 305.6820370890404, 269.8294463336863, 302.51621220000004, 274.711, 302.51621220000004);
+    uictx.bezierCurveTo(
+        279.59255366631373,
+        302.51621220000004,
+        283.5498348,
+        305.6820370890404,
+        283.5498348,
+        309.58728
+    );
+    uictx.bezierCurveTo(
+        283.5498348,
+        313.4925229109596,
+        279.59255366631373,
+        316.6583478,
+        274.711,
+        316.6583478
+    );
+    uictx.bezierCurveTo(
+        269.8294463336863,
+        316.6583478,
+        265.87216520000004,
+        313.4925229109596,
+        265.87216520000004,
+        309.58728
+    );
+    uictx.bezierCurveTo(
+        265.87216520000004,
+        305.6820370890404,
+        269.8294463336863,
+        302.51621220000004,
+        274.711,
+        302.51621220000004
+    );
     uictx.closePath();
     uictx.fill("nonzero");
     uictx.stroke();
@@ -366,15 +494,43 @@ function drawMuffin() {
     uictx.transform(0.98343684, 0, 0, 1.0755093, 86.541108, -226.36949);
     uictx.beginPath();
     uictx.moveTo(394.91913, 297.5664491);
-    uictx.bezierCurveTo(398.23858634729015, 297.5664491, 400.9295374, 299.9408177891661, 400.9295374, 302.86975);
-    uictx.bezierCurveTo(400.9295374, 305.79868221083393, 398.23858634729015, 308.1730509, 394.91913, 308.1730509);
-    uictx.bezierCurveTo(391.59967365270984, 308.1730509, 388.9087226, 305.79868221083393, 388.9087226, 302.86975);
-    uictx.bezierCurveTo(388.9087226, 299.9408177891661, 391.59967365270984, 297.5664491, 394.91913, 297.5664491);
+    uictx.bezierCurveTo(
+        398.23858634729015,
+        297.5664491,
+        400.9295374,
+        299.9408177891661,
+        400.9295374,
+        302.86975
+    );
+    uictx.bezierCurveTo(
+        400.9295374,
+        305.79868221083393,
+        398.23858634729015,
+        308.1730509,
+        394.91913,
+        308.1730509
+    );
+    uictx.bezierCurveTo(
+        391.59967365270984,
+        308.1730509,
+        388.9087226,
+        305.79868221083393,
+        388.9087226,
+        302.86975
+    );
+    uictx.bezierCurveTo(
+        388.9087226,
+        299.9408177891661,
+        391.59967365270984,
+        297.5664491,
+        394.91913,
+        297.5664491
+    );
     uictx.closePath();
     uictx.fill("nonzero");
     uictx.stroke();
     uictx.restore();
     uictx.restore();
     uictx.restore();
-    uictx.moveTo(80000, 80000)
+    uictx.moveTo(80000, 80000);
 }

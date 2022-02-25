@@ -8,6 +8,12 @@ import { Paddle } from "./paddle.js";
 import { Wall, walls } from "./wall.js";
 import { Ball, balls } from "./ball.js";
 
+let gamediv = document.getElementById("game");
+let gamecanvas = document.createElement("canvas");
+gamecanvas.width = gamediv.offsetWidth;
+gamecanvas.height = gamediv.offsetHeight;
+gamecanvas.setAttribute("id", "game-layer");
+gamediv.appendChild(gamecanvas);
 export const canvas = document.getElementById("game-layer");
 export const ctx = canvas.getContext("2d", { alpha: false });
 export const fps_ratio = (ms) => {

@@ -2,22 +2,26 @@
  * Represents canvas as a grid_size*grid_size grid of cells, so we can decide what cells to fill in
  * If 75% of the grid is filled by walls, the grid is cleared and next level starts
  */
-import { purple } from './game.js';
-import { Ball, balls } from './ball.js';
-let slowcanvas = document.getElementById("slow-layer");
+import { purple } from "./game.js";
+import { Ball, balls } from "./ball.js";
+let gamediv = document.getElementById("game");
+let slowcanvas = document.createElement("canvas");
+slowcanvas.width = gamediv.offsetWidth;
+slowcanvas.height = gamediv.offsetHeight;
+slowcanvas.setAttribute("id", "slow-layer");
+gamediv.appendChild(slowcanvas);
 
 export const grid_size = 10;
-export const px2grid = px => Math.floor(px / grid_size)
-export const grid2px = grid_coord => grid_coord * grid_size;
-export const gridsafe = px => grid2px(px2grid(px));
-const arrayOfLength = len => Array.apply(null, Array(len));
-const newGridArray = (filled) => arrayOfLength(px2grid(slowcanvas.height)).map(
-    () => {
-        return arrayOfLength(px2grid(slowcanvas.width)).map(
-            () => { return filled }
-        )
-    }
-)
+export const px2grid = (px) => Math.floor(px / grid_size);
+export const grid2px = (grid_coord) => grid_coord * grid_size;
+export const gridsafe = (px) => grid2px(px2grid(px));
+const arrayOfLength = (len) => Array.apply(null, Array(len));
+const newGridArray = (filled) =>
+    arrayOfLength(px2grid(slowcanvas.height)).map(() => {
+        return arrayOfLength(px2grid(slowcanvas.width)).map(() => {
+            return filled;
+        });
+    });
 let grid_length;
 
 export class Grid {
@@ -27,7 +31,7 @@ export class Grid {
         let i = 0;
         // Create 2-dimensional array of cells, outer array being the y axis
         this.grid = newGridArray(false);
-        grid_length = px2grid(slowcanvas.width) * px2grid(slowcanvas.height)
+        grid_length = px2grid(slowcanvas.width) * px2grid(slowcanvas.height);
     }
 
     draw() {
@@ -53,7 +57,7 @@ export class Grid {
             if (e instanceof TypeError) {
                 console.error(`(x${x}, y${y}) is out of bounds`);
             }
-            throw (e);
+            throw e;
         }
     }
 
@@ -64,7 +68,7 @@ export class Grid {
             if (e instanceof TypeError) {
                 console.error(`(x${x}, y${y}) is out of bounds`);
             }
-            throw (e);
+            throw e;
         }
     }
 
@@ -90,16 +94,37 @@ export class Grid {
     }
 
     recursive_fill(hypothetical_grid, x, y) {
-        if (x >= 0 && x < px2grid(slowcanvas.width) && y >= 0 && y < px2grid(slowcanvas.height)) {
+        if (
+            x >= 0 &&
+            x < px2grid(slowcanvas.width) &&
+            y >= 0 &&
+            y < px2grid(slowcanvas.height)
+        ) {
             if (this.grid[y][x] === false && hypothetical_grid[y][x] === true) {
                 hypothetical_grid[y][x] = false;
-                hypothetical_grid = this.recursive_fill(hypothetical_grid, x - 1, y);
-                hypothetical_grid = this.recursive_fill(hypothetical_grid, x + 1, y);
-                hypothetical_grid = this.recursive_fill(hypothetical_grid, x, y - 1);
-                hypothetical_grid = this.recursive_fill(hypothetical_grid, x, y + 1);
+                hypothetical_grid = this.recursive_fill(
+                    hypothetical_grid,
+                    x - 1,
+                    y
+                );
+                hypothetical_grid = this.recursive_fill(
+                    hypothetical_grid,
+                    x + 1,
+                    y
+                );
+                hypothetical_grid = this.recursive_fill(
+                    hypothetical_grid,
+                    x,
+                    y - 1
+                );
+                hypothetical_grid = this.recursive_fill(
+                    hypothetical_grid,
+                    x,
+                    y + 1
+                );
             }
         }
-        return hypothetical_grid
+        return hypothetical_grid;
     }
 
     flood_fill() {
@@ -111,23 +136,23 @@ export class Grid {
         }
         for (let y = 0; y < this.grid.length; y++) {
             for (let x = 0; x < px2grid(slowcanvas.width); x++) {
-                this.grid[y][x] = hypothetical_grid[y][x]
+                this.grid[y][x] = hypothetical_grid[y][x];
             }
         }
     }
 
     percentFilled() {
         let accumulated = 0;
-        let whats_complete = this.grid.map(
-            (y) => {
-                return y.filter(
-                    ((cell) => { if (cell === true) { return cell } })
-                )
-            }
-        )
+        let whats_complete = this.grid.map((y) => {
+            return y.filter((cell) => {
+                if (cell === true) {
+                    return cell;
+                }
+            });
+        });
         for (let i = 0; i < whats_complete.length; i++) {
-            accumulated += whats_complete[i].length
+            accumulated += whats_complete[i].length;
         }
-        return accumulated / grid_length * 100
+        return (accumulated / grid_length) * 100;
     }
 }

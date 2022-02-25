@@ -1,7 +1,7 @@
-import { ctx, purple } from './game.js';
-import { gridsafe, grid_size } from './grid.js';
-import { mouseX, mouseY } from './ui.js';
-let canvas = document.getElementById("game-layer");
+import { ctx, purple } from "./game.js";
+import { gridsafe, grid_size } from "./grid.js";
+import { mouseX, mouseY } from "./ui.js";
+import { canvas } from "./game.js";
 
 export class Paddle {
     constructor() {
