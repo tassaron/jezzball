@@ -218,13 +218,13 @@ function drawGameOver() {
     uictx.fillStyle = "#33aaff";
     uictx.fillText(
         "Game Over",
-        uicanvas.width / 2 - 132,
+        uicanvas.width / 2 - 98,
         uicanvas.height / 2 - 32
     );
     uictx.font = "12pt Sans";
     uictx.fillText(
         "tap or click to restart",
-        uicanvas.width / 2 - 86,
+        uicanvas.width / 2 - 72,
         uicanvas.height / 2 + 22
     );
 }
