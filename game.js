@@ -8,6 +8,9 @@ import { Paddle } from "./paddle.js";
 import { Wall, walls } from "./wall.js";
 import { Ball, balls } from "./ball.js";
 
+// from the Rainey Arcade parent repo
+import { send_score, hide_send_score_button } from "../send_score.js";
+
 let gamediv = document.getElementById("game");
 let gamecanvas = document.createElement("canvas");
 gamecanvas.width = gamediv.offsetWidth;
