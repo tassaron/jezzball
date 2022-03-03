@@ -46,7 +46,9 @@ export function addUIEventListeners() {
     document.addEventListener(
         "contextmenu",
         function (e) {
-            e.preventDefault();
+            if (gamediv.contains(e.target)) {
+                e.preventDefault();
+            }
         },
         false
     );
