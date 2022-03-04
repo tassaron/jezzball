@@ -1,3 +1,7 @@
+:root {
+  --arcade-font: sans-serif;
+}
+
 body {
     padding: 0;
     margin: auto auto;

@@ -29,6 +29,8 @@ let prevScore = -1;
 let prevPercent = -1;
 let gameOverDrawn = false;
 let livesColour = "#000";
+const fontStyleSm = "0.5rem var(--arcade-font)";
+const fontStyleLg = "1.5rem var(--arcade-font)";
 
 export function addUIEventListeners() {
     /* Connect onclick events to HTML "buttons" */
@@ -183,7 +185,7 @@ export function clearUI() {
 }
 
 function drawScore() {
-    uictx.font = "12pt Sans";
+    uictx.font = fontStyleSm;
     uictx.fillStyle = "#000";
     uictx.fillText(`${percent}% Cleared`, grid_size, 20);
     uictx.fillText(
@@ -194,7 +196,7 @@ function drawScore() {
 }
 
 function drawLives() {
-    uictx.font = "12pt Sans";
+    uictx.font = fontStyleSm;
     if (timer.diedRecently > 0) {
         if (timer.diedRecently % 15 == 0 && livesColour == "#000") {
             livesColour = "#ff0000";
@@ -216,30 +218,30 @@ function drawLives() {
 }
 
 function drawGameOver() {
-    uictx.font = "32pt Sans";
+    uictx.font = fontStyleLg;
     uictx.fillStyle = "#33aaff";
     uictx.fillText(
         "Game Over",
-        uicanvas.width / 2 - 98,
+        uicanvas.width / 2 - 104,
         uicanvas.height / 2 - 32
     );
-    uictx.font = "12pt Sans";
+    uictx.font = fontStyleSm;
     uictx.fillText(
         "tap or click to restart",
-        uicanvas.width / 2 - 72,
+        uicanvas.width / 2 - 86,
         uicanvas.height / 2 + 22
     );
 }
 
 export function drawPauseScreen() {
-    uictx.font = "32pt Sans";
+    uictx.font = fontStyleLg;
     uictx.fillStyle = "#333";
     uictx.fillText("Paused", uicanvas.width / 2 - 90, uicanvas.height / 2);
 }
 
 function drawCountdown() {
     let num = Math.floor(timer.ballPause / 60) + 1;
-    uictx.font = "32pt Sans";
+    uictx.font = fontStyleLg;
     uictx.fillStyle = purple;
     if (num % 2 == 0) {
         uictx.fillStyle = "black";
