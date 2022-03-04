@@ -16,11 +16,10 @@ body {
     width: 720px;
     height: 640px;
     position: relative;
-    display: inline-block;
+    display: block;
     border: 2px solid black;
   }
 
-canvas { position: absolute; top: 0px; left: 0px;}
 #ui-layer { z-index: 3; position: absolute; top: 0px; left: 0px;}
 #slow-layer { z-index: 2; position: absolute; top: 0px; left: 0px;}
 #game-layer { z-index: 1; position: absolute; top: 0px; left: 0px;}
