@@ -190,7 +190,7 @@ function drawScore() {
     uictx.fillText(`${percent}% Cleared`, grid_size, 20);
     uictx.fillText(
         `Score: ${score}`,
-        grid_size * (px2grid(uicanvas.width) / 2) - 30,
+        grid_size * (px2grid(uicanvas.width) / 2) - 70,
         uicanvas.height - 10
     );
 }
@@ -214,7 +214,7 @@ function drawLives() {
     } else {
         var livesText = lives.toString();
     }
-    uictx.fillText(`Lives: ${livesText}`, uicanvas.width - 72, 20);
+    uictx.fillText(`Lives: ${livesText}`, uicanvas.width - 138, 20);
 }
 
 function drawGameOver() {
@@ -222,13 +222,13 @@ function drawGameOver() {
     uictx.fillStyle = "#33aaff";
     uictx.fillText(
         "Game Over",
-        uicanvas.width / 2 - 120,
+        uicanvas.width / 2 - 180,
         uicanvas.height / 2 - 32
     );
     uictx.font = fontStyleSm;
     uictx.fillText(
         "tap or click to restart",
-        uicanvas.width / 2 - 72,
+        uicanvas.width / 2 - 170,
         uicanvas.height / 2 + 22
     );
 }
@@ -246,8 +246,8 @@ function drawCountdown() {
     if (num % 2 == 0) {
         uictx.fillStyle = "black";
     }
-    uictx.fillText("JEZZBALL", uicanvas.width / 2 - 100, uicanvas.height / 2 - 64);
-    uictx.fillText(num, uicanvas.width / 2 - 8, uicanvas.height / 2 + 4);
+    uictx.fillText("JEZZBALL", uicanvas.width / 2 - 164, uicanvas.height / 2 - 74);
+    uictx.fillText(num, uicanvas.width / 2 - 16, uicanvas.height / 2 + 4);
 }
 
 function drawMuffin() {

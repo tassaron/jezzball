@@ -228,7 +228,7 @@ function show_send_score_button() {
             e.currentTarget.removeEventListener("click", sendScore);
             e.stopPropagation();
         }
-        send_score_button.setAttribute("style", "z-index: 100; display: block; left: 50%; top: 50%; transform: translate(-50%);");
+        send_score_button.setAttribute("style", "z-index: 100; display: block; left: 50%; bottom: 30%; transform: translate(-50%);");
         send_score_button.addEventListener("click", sendScore);
     }
 }
