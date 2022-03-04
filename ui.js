@@ -188,9 +188,10 @@ function drawScore() {
     uictx.font = fontStyleSm;
     uictx.fillStyle = "#000";
     uictx.fillText(`${percent}% Cleared`, grid_size, 20);
+    const scoreText = `Score: ${score}`;
     uictx.fillText(
-        `Score: ${score}`,
-        grid_size * (px2grid(uicanvas.width) / 2) - 70,
+        scoreText,
+        grid_size * (px2grid(uicanvas.width) / 2) - (uictx.measureText(scoreText).width / 2),
         uicanvas.height - 10
     );
 }
@@ -209,26 +210,31 @@ function drawLives() {
         timer.diedRecently--;
     }
     uictx.fillStyle = livesColour;
+    let livesText;
     if (lives == -1) {
-        var livesText = "0";
+        livesText = "0";
     } else {
-        var livesText = lives.toString();
+        livesText = lives.toString();
     }
-    uictx.fillText(`Lives: ${livesText}`, uicanvas.width - 138, 20);
+    livesText = `Lives: ${livesText}`;
+    const textWidth = uictx.measureText(livesText).width;
+    uictx.fillText(livesText, uicanvas.width - textWidth - grid_size, 20);
 }
 
 function drawGameOver() {
+    const gameOverText = "Game Over";
+    const restartText = "tap or click to restart";
     uictx.font = fontStyleLg;
     uictx.fillStyle = "#33aaff";
     uictx.fillText(
-        "Game Over",
-        uicanvas.width / 2 - 180,
+        gameOverText,
+        (uicanvas.width / 2) - (uictx.measureText(gameOverText).width / 2),
         uicanvas.height / 2 - 32
     );
     uictx.font = fontStyleSm;
     uictx.fillText(
-        "tap or click to restart",
-        uicanvas.width / 2 - 170,
+        restartText,
+        uicanvas.width / 2 - (uictx.measureText(restartText).width / 2),
         uicanvas.height / 2 + 22
     );
 }
@@ -236,7 +242,7 @@ function drawGameOver() {
 export function drawPauseScreen() {
     uictx.font = fontStyleLg;
     uictx.fillStyle = "#333";
-    uictx.fillText("Paused", uicanvas.width / 2 - 90, uicanvas.height / 2);
+    uictx.fillText("Paused", uicanvas.width / 2 - (uictx.measureText("Paused").width / 2), uicanvas.height / 2);
 }
 
 function drawCountdown() {
@@ -246,8 +252,8 @@ function drawCountdown() {
     if (num % 2 == 0) {
         uictx.fillStyle = "black";
     }
-    uictx.fillText("JEZZBALL", uicanvas.width / 2 - 164, uicanvas.height / 2 - 74);
-    uictx.fillText(num, uicanvas.width / 2 - 16, uicanvas.height / 2 + 4);
+    uictx.fillText("JEZZBALL", uicanvas.width / 2 - (uictx.measureText("JEZZBALL").width / 2), uicanvas.height / 2 - 74);
+    uictx.fillText(num, uicanvas.width / 2 - (uictx.measureText(num).width / 2), uicanvas.height / 2 + 4);
 }
 
 function drawMuffin() {
@@ -539,5 +545,4 @@ function drawMuffin() {
     uictx.restore();
     uictx.restore();
     uictx.restore();
-    uictx.moveTo(80000, 80000);
 }
