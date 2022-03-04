@@ -2,14 +2,12 @@
 Game Loop
 */
 export const purple = "#993f70";
+import { send_score, hide_send_score_button } from "./compat.js";
 import { addUIEventListeners, drawUI, clearUI, drawPauseScreen } from "./ui.js";
 import { Grid } from "./grid.js";
 import { Paddle } from "./paddle.js";
 import { Wall, walls } from "./wall.js";
 import { Ball, balls } from "./ball.js";
-
-// from the Rainey Arcade parent repo
-import { send_score, hide_send_score_button } from "../send_score.js";
 
 let gamediv = document.getElementById("game");
 let gamecanvas = document.createElement("canvas");
@@ -75,7 +73,9 @@ export function initGame() {
 
 export function startGame() {
     /* Starts a new game */
-    hide_send_score_button();
+    if (hide_send_score_button != undefined) {
+        hide_send_score_button();
+    }
     balls[0].x = canvas.width / 2 - 48;
     balls[0].y = canvas.height - 96;
     balls[1].x = canvas.width / 2 + 48;
