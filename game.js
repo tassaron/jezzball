@@ -2,7 +2,7 @@
 Game Loop
 */
 export const purple = "#993f70";
-import { send_score, hide_send_score_button } from "./compat.js";
+import { create_show_send_score_button, hide_send_score_button } from "./compat.js";
 import { addUIEventListeners, drawUI, clearUI, drawPauseScreen } from "./ui.js";
 import { Grid } from "./grid.js";
 import { Paddle } from "./paddle.js";
@@ -29,6 +29,8 @@ export let lives = 3;
 export let gameOver = false;
 export let gamePaused = false;
 let then = Date.now();
+const show_send_score_button = create_show_send_score_button(score);
+
 
 // Timer for pausing the ball during countdowns
 // and giving invincibility frames after a death
@@ -210,25 +212,5 @@ function nextLevel() {
         } else {
             balls[balls.length - 1].dy = Ball.speed;
         }
-    }
-}
-
-
-function show_send_score_button() {
-    // If embedded on Rainey Arcade, integrate with the send_score_button
-    const send_score_button = document.getElementById("send_score_button");
-    if (send_score_button) {
-        function sendScore(e) {
-            send_score(
-                document.getElementById("game_title").dataset.filename,
-                score,
-                send_score_button.dataset.csrfToken,
-            );
-            e.currentTarget.setAttribute("style", "display: none;");
-            e.currentTarget.removeEventListener("click", sendScore);
-            e.stopPropagation();
-        }
-        send_score_button.setAttribute("style", "z-index: 100; display: block; left: 50%; bottom: 30%; transform: translate(-50%);");
-        send_score_button.addEventListener("click", sendScore);
     }
 }
