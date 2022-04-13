@@ -187,12 +187,12 @@ export function clearUI() {
 function drawScore() {
     uictx.font = fontStyleSm;
     uictx.fillStyle = "#000";
-    uictx.fillText(`${percent}% Cleared`, grid_size, 20);
+    uictx.fillText(`${percent}% Cleared`, grid_size, grid_size * 2);
     const scoreText = `Score: ${score}`;
     uictx.fillText(
         scoreText,
         grid_size * (px2grid(uicanvas.width) / 2) - (uictx.measureText(scoreText).width / 2),
-        uicanvas.height - 10
+        uicanvas.height - grid_size
     );
 }
 
@@ -218,7 +218,7 @@ function drawLives() {
     }
     livesText = `Lives: ${livesText}`;
     const textWidth = uictx.measureText(livesText).width;
-    uictx.fillText(livesText, uicanvas.width - textWidth - grid_size, 20);
+    uictx.fillText(livesText, uicanvas.width - textWidth - grid_size, grid_size * 2);
 }
 
 function drawGameOver() {
@@ -229,13 +229,13 @@ function drawGameOver() {
     uictx.fillText(
         gameOverText,
         (uicanvas.width / 2) - (uictx.measureText(gameOverText).width / 2),
-        uicanvas.height / 2 - 32
+        uicanvas.height / 2 - (grid_size * 3)
     );
     uictx.font = fontStyleSm;
     uictx.fillText(
         restartText,
         uicanvas.width / 2 - (uictx.measureText(restartText).width / 2),
-        uicanvas.height / 2 + 22
+        uicanvas.height / 2 + (grid_size * 2)
     );
 }
 
@@ -252,6 +252,6 @@ function drawCountdown() {
     if (num % 2 == 0) {
         uictx.fillStyle = "black";
     }
-    uictx.fillText("JEZZBALL", uicanvas.width / 2 - (uictx.measureText("JEZZBALL").width / 2), uicanvas.height / 2 - 74);
-    uictx.fillText(num, uicanvas.width / 2 - (uictx.measureText(num).width / 2), uicanvas.height / 2 + 4);
+    uictx.fillText("JEZZBALL", uicanvas.width / 2 - (uictx.measureText("JEZZBALL").width / 2), uicanvas.height / 2 - (grid_size * 7));
+    uictx.fillText(num, uicanvas.width / 2 - (uictx.measureText(num).width / 2), uicanvas.height / 2 + grid_size);
 }
