@@ -15,7 +15,21 @@
                 src="../img/back_arrow.png">the&nbsp;list&nbsp;of fun&nbsp;stuff</a></div>
     <div id="pause_button">&#9612;&#9612; PAUSE GAME</div>
     <div id="main_content">
-        <script type="module" src="main.js"></script>
+        <!-- Remove / as needed to toggle modes -->
+        <!-- Miniature mode -/->
+            <style>
+                #game {
+                    width: 360px;
+                    height: 320px;
+                }
+            </style>
+        -->
+        <!-- Unbundled mode -/->
+            <script type="module" src="main.js"></script>
+        -->
+        <!-- Bundled mode -->
+        <script type="module" src="bundle.js"></script>
+        -->
         <h1>JEZZBALL</h1>
         <div id="help_text">Fill the level with walls! Tap to place a wall.<br>Tap the box underneath, or right-click,
             to swap direction.</div>
