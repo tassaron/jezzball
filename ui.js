@@ -29,8 +29,8 @@ let prevScore = -1;
 let prevPercent = -1;
 let gameOverDrawn = false;
 let livesColour = "#000";
-const fontStyleSm = "1rem var(--arcade-font)";
-const fontStyleLg = "2.75rem var(--arcade-font)";
+const fontStyleSm = "0.9rem var(--arcade-font)";
+const fontStyleLg = "2.1rem var(--arcade-font)";
 
 export function addUIEventListeners() {
     /* Connect onclick events to HTML "buttons" */
