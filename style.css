@@ -4,7 +4,6 @@
 
 body {
     padding: 0;
-    margin: auto auto;
     background: #993f70;
     color: #eee;
     text-align: center;
@@ -13,6 +12,7 @@ body {
 }
 
 #game {
+    margin: auto;
     width: 720px;
     height: 640px;
     position: relative;
