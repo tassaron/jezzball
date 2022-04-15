@@ -10,12 +10,14 @@ import { Wall, walls } from "./wall.js";
 import { Ball, balls } from "./ball.js";
 
 let gamediv = document.getElementById("game");
-let gamecanvas = document.createElement("canvas");
-gamecanvas.width = gamediv.offsetWidth;
-gamecanvas.height = gamediv.offsetHeight;
-gamecanvas.setAttribute("id", "game-layer");
-gamediv.appendChild(gamecanvas);
-export const canvas = document.getElementById("game-layer");
+export const canvas = document.createElement("canvas");
+canvas.setAttribute("id", "game-layer");
+window.addEventListener("load", () => {
+    /* set the size of canvas element after stylesheets are loaded */
+    canvas.width = gamediv.offsetWidth;
+    canvas.height = gamediv.offsetHeight;
+    gamediv.appendChild(canvas);
+});
 export const ctx = canvas.getContext("2d", { alpha: false });
 export const fps_ratio = (ms) => {
     return Math.min(ms / (1000 / 60), 2);
