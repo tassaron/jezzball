@@ -139,6 +139,7 @@ export function create_show_send_score_button(score) {
 
 export const hide_send_score_button = function() {
     const send_score_button = document.getElementById("send_score_button");
+    if (!send_score_button) return;
     send_score_button.setAttribute("style", "display: none;");
 
     // Remove event listeners by cloning the button
