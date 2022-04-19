@@ -151,16 +151,15 @@ function draw() {
         }
     }
 
-    if (gameOver == false) {
-        for (let i = 0; i < walls.length; i++) {
-            walls[i].draw();
-        }
-        for (let i = 0; i < balls.length; i++) {
-            balls[i].draw();
-        }
-        paddle.draw();
-    }
     drawUI();
+    if (gameOver) return
+    for (let i = 0; i < walls.length; i++) {
+        walls[i].draw();
+    }
+    for (let i = 0; i < balls.length; i++) {
+        balls[i].draw();
+    }
+    paddle.draw();
     requestAnimationFrame(draw);
     then = Date.now();
 }
