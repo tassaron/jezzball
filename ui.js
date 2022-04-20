@@ -40,9 +40,9 @@ export function addUIEventListeners() {
     swap_button.addEventListener("click", swapDirection, false);
 
     /* Connect keyboard/mouse/touch events to canvas */
-    uicanvas.addEventListener("touchstart", touchStartHandler, false);
+    uicanvas.addEventListener("touchstart", touchStartHandler, {passive: false, capture: false});
     uicanvas.addEventListener("touchend", touchEndHandler, false);
-    uicanvas.addEventListener("touchmove", touchMoveHandler, false);
+    uicanvas.addEventListener("touchmove", touchMoveHandler, {passive: false, capture: false});
     uicanvas.addEventListener("mousedown", mouseDownHandler, false);
     uicanvas.addEventListener("mousemove", mouseMoveHandler, false);
     document.addEventListener(
