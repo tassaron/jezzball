@@ -51,26 +51,33 @@ export class Ball {
             timer.ballPause--;
             return;
         }
+
+        const calcPotentialX = () => this.x + (this.dx * fps_ratio(delta))
+        const calcPotentialY = () => this.y + (this.dy * fps_ratio(delta))
+        let potentialX = calcPotentialX();
+        let potentialY = calcPotentialY();
+
         /* Bounce off canvas edges */
         let hit = false;
         if (
-            this.x + (this.dx * fps_ratio(delta)) > canvas.width - Ball.radius ||
-            this.x + (this.dx * fps_ratio(delta)) < Ball.radius
+            potentialX > canvas.width - Ball.radius ||
+            potentialX < Ball.radius
         ) {
             hit = true;
             this.dx = Ball.bounce(this.dx);
+            potentialX = calcPotentialX();
         }
         if (
-            this.y + (this.dy * fps_ratio(delta)) < Ball.radius ||
-            this.y + (this.dy * fps_ratio(delta)) > canvas.height - Ball.radius
+            potentialY < Ball.radius ||
+            potentialY > canvas.height - Ball.radius
         ) {
             hit = true;
             this.dy = Ball.bounce(this.dy);
+            potentialY = calcPotentialY();
         }
 
-
-        this.x += this.dx * fps_ratio(delta);
-        this.y += this.dy * fps_ratio(delta);
+        this.x = potentialX;
+        this.y = potentialY;
 
         if (!hit) {
             for (let ball of balls) {
@@ -112,8 +119,8 @@ export class Ball {
         return speed;
     }
 
+    /** Returns true if the hypothesized x-coord would intersect the given wall */
     intersectsX(x, wall) {
-        /* Returns true if the hypothesized x-coord would intersect a wall */
         let y = gridsafe(this.y - Ball.radius);
         return (
             x + Ball.radius > wall.x && x - Ball.radius < wall.x + wall.width &&
@@ -122,8 +129,8 @@ export class Ball {
         )
     }
 
+    /** Returns true if the hypothesized y-coord would intersect the given wall */
     intersectsY(y, wall) {
-        /* Returns true if the hypothesized y-coord would intersect a wall */
         let x = gridsafe(this.x - Ball.radius);
         return (
             y + Ball.radius > wall.y && y - Ball.radius < wall.y + wall.height &&
@@ -135,13 +142,19 @@ export class Ball {
     collideWithWalls(delta) {
         let new_hit = false;
         let grid_aligned_boundary_coord;
+        // Iterate over each wall
+        // 0 is vertical, 1 is horizontal
         for (let i = 0; i < walls.length; i++) {
             if (walls[i].dir == 0) {
+                // if wall is vertical
                 if (this.dx < 0) {
+                    // if ball is travelling left
                     grid_aligned_boundary_coord = gridsafe(this.x) - Ball.radius
                 } else {
+                    // if ball is travelling right
                     grid_aligned_boundary_coord = gridsafe(this.x + Ball.radius)
                 }
+                // Ensure new X position does not continue to intersect the wall 
                 if (this.intersectsX(grid_aligned_boundary_coord + this.dx * fps_ratio(delta), walls[i])) {
                     new_hit = true;
                     if (this.intersectsX(grid_aligned_boundary_coord + Ball.bounce(this.dx) * fps_ratio(delta), walls[i])) {
@@ -150,11 +163,15 @@ export class Ball {
                     this.dx = Ball.bounce(this.dx);
                 }
             } else {
+                // if wall is horizontal
                 if (this.dy < 0) {
+                    // if ball is travelling up
                     grid_aligned_boundary_coord = gridsafe(this.y - Ball.radius)
                 } else {
+                    // if ball is travelling down
                     grid_aligned_boundary_coord = gridsafe(this.y + Ball.radius)
                 }
+                // Ensure new Y position does not continue to intersect the wall 
                 if (this.intersectsY(grid_aligned_boundary_coord + this.dy * fps_ratio(delta), walls[i])) {
                     new_hit = true;
                     if (this.intersectsY(grid_aligned_boundary_coord + Ball.bounce(this.dy) * fps_ratio(delta), walls[i])) {
@@ -163,11 +180,14 @@ export class Ball {
                     this.dy = Ball.bounce(this.dy);
                 }
             }
+
+            // If a hit/collision occurred, return the index of the wall this ball collided with
             if (new_hit) {
                 if (walls[i].building === null) {
                     // If this wall isn't a building yet, return its index to destroy it
                     return i;
                 } else {
+                    // If no hit/collision occurred, return -1
                     return -1;
                 }
             }

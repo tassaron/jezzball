@@ -31,7 +31,7 @@ export class Wall {
         Wall.count += 1;
         this._x = gridsafe(paddle.x);
         this._y = gridsafe(paddle.y);
-        this.dir = paddle.direction;
+        this.dir = paddle.direction; // 0 is vertical, 1 is horizontal
         this._width = paddle.width;
         this._height = paddle.height;
         this.building = null;

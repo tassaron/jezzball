@@ -129,8 +129,12 @@ function draw() {
     /* Move and collide balls & delete expanding walls that intersect balls */
     for (let i_ = 0; i_ < balls.length; i_++) {
         let collision = balls[i_].move(delta);
+
+        // Collision will be -1 if no collision occurred
         if (collision > -1) {
+            // Collision is the index of an expanding wall
             if (timer.dying == 0) {
+                // Decrease `lives` if not already decreasing from a recent collision
                 timer.dying = 30;
                 if (lives > 0) {
                     timer.diedRecently = 90;
