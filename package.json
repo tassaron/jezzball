@@ -1,12 +1,14 @@
 {
   "name": "jezzball",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "private": true,
   "description": "html5 touchscreen jezzball",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --progress --mode=development --config webpack.config.js",
-    "build": "webpack --progress --mode=production --config webpack.config.js"
+    "build": "webpack --progress --mode=production --config webpack.config.js",
+    "watch": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,16 @@
   "homepage": "https://github.com/tassaron/jezzball#readme",
   "devDependencies": {
     "babel-loader": "^8.2.4",
+    "nodemon": "^2.0.16",
     "webpack-cli": "^4.9.2"
+  },
+  "nodemonConfig": {
+    "exec": "npm run dev",
+    "watch": [
+      "*"
+    ],
+    "exclude": [
+      "*.md"
+    ]
   }
 }
