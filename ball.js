@@ -149,13 +149,13 @@ export class Ball {
                 // if wall is vertical
                 if (this.dx < 0) {
                     // if ball is travelling left
-                    grid_aligned_boundary_coord = gridsafe(this.x) - Ball.radius
+                    grid_aligned_boundary_coord = gridsafe(this.x)
                 } else {
                     // if ball is travelling right
                     grid_aligned_boundary_coord = gridsafe(this.x + Ball.radius)
                 }
                 // Ensure new X position does not continue to intersect the wall 
-                if (this.intersectsX(grid_aligned_boundary_coord + this.dx * fps_ratio(delta), walls[i])) {
+                if (this.intersectsX(grid_aligned_boundary_coord, walls[i])) {
                     new_hit = true;
                     if (this.intersectsX(grid_aligned_boundary_coord + Ball.bounce(this.dx) * fps_ratio(delta), walls[i])) {
                         this.x = this.dx > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
@@ -166,13 +166,13 @@ export class Ball {
                 // if wall is horizontal
                 if (this.dy < 0) {
                     // if ball is travelling up
-                    grid_aligned_boundary_coord = gridsafe(this.y - Ball.radius)
+                    grid_aligned_boundary_coord = gridsafe(this.y)
                 } else {
                     // if ball is travelling down
                     grid_aligned_boundary_coord = gridsafe(this.y + Ball.radius)
                 }
                 // Ensure new Y position does not continue to intersect the wall 
-                if (this.intersectsY(grid_aligned_boundary_coord + this.dy * fps_ratio(delta), walls[i])) {
+                if (this.intersectsY(grid_aligned_boundary_coord, walls[i])) {
                     new_hit = true;
                     if (this.intersectsY(grid_aligned_boundary_coord + Ball.bounce(this.dy) * fps_ratio(delta), walls[i])) {
                         this.y = this.dy > 0 ? grid_aligned_boundary_coord - grid_size : grid_aligned_boundary_coord + grid_size
