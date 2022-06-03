@@ -11,7 +11,7 @@ slowcanvas.height = gamediv.offsetHeight;
 slowcanvas.setAttribute("id", "slow-layer");
 gamediv.appendChild(slowcanvas);
 
-export const grid_size = 10;
+export const grid_size = 12;
 export const px2grid = (px) => Math.floor(px / grid_size);
 export const grid2px = (grid_coord) => grid_coord * grid_size;
 export const gridsafe = (px) => grid2px(px2grid(px));
